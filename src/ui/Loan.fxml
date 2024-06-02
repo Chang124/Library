@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoanControl">
+   <children>
+      <Label layoutX="159.0" layoutY="31.0" text="Title">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tbLoan" layoutX="157.0" layoutY="110.0" prefHeight="130.0" prefWidth="632.0">
+         <columns>
+            <TableColumn prefWidth="73.60003662109375" text="Borrow ID" />
+            <TableColumn prefWidth="99.199951171875" text="Customer Name" />
+            <TableColumn prefWidth="152.800048828125" text="Title" />
+            <TableColumn prefWidth="86.39996337890625" text="Author" />
+            <TableColumn prefWidth="105.5999755859375" text="Over Due" />
+            <TableColumn prefWidth="115.20013427734375" text="Return Date" />
+         </columns>
+      </TableView>
+      <TextField fx:id="txtSearch" layoutX="157.0" layoutY="53.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72; -fx-background-color: #F6F6E9;" />
+      <AnchorPane prefHeight="600.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9;">
+         <children>
+            <Label fx:id="staffName" layoutX="30.0" layoutY="77.0" text="staffName">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="62.0" fitWidth="77.0" layoutX="28.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Downloads/logo%20(1).png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Label fx:id="staffName" layoutX="30.0" layoutY="77.0" text="staffName">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnDashboard" layoutY="119.0" mnemonicParsing="false" onMouseClicked="#DashboardClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Dashboard">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #001AFF; -fx-background-radius: 0;" text="Library loans" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnBook" layoutY="194.0" mnemonicParsing="false" onMouseClicked="#BookClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Books">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnBorrow" layoutY="231.0" mnemonicParsing="false" onMouseClicked="#BorrowClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Borrow Books">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnReturn" layoutY="268.0" mnemonicParsing="false" onMouseClicked="#ReturnClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Return Books">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnCustomer" layoutY="305.0" mnemonicParsing="false" onMouseClicked="#CustomerClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Customers">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnCategory" layoutY="342.0" mnemonicParsing="false" onMouseClicked="#CategoryClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Categories">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnLogout" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#LogoutClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #F6F6E9; -fx-background-radius: 0;" text="Logout">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnSearch" layoutX="309.0" layoutY="53.0" mnemonicParsing="false" prefHeight="24.22" style="-fx-background-color: #F6F6E9; -fx-background-radius: 25;" text="Search" />
+   </children>
+</AnchorPane>

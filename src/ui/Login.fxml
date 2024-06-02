@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="546.88" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="546.88" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginControl">
    <children>
-      <AnchorPane prefHeight="400.0" prefWidth="295.7" style="-fx-background-color: #0A2A5C;" />
+      <AnchorPane prefHeight="400.0" prefWidth="295.7" style="-fx-background-color: #0A2A5C;">
+         <children>
+            <Label layoutX="66.0" layoutY="143.0" text="Name" textFill="WHITE" />
+            <Label layoutX="66.0" layoutY="227.0" text="Password" textFill="WHITE" />
+            <TextField fx:id="txtName" layoutX="54.0" layoutY="170.0" prefHeight="29.3" prefWidth="187.11" style="-fx-background-color: #F6F6E9; -fx-background-radius: 23.44;" />
+            <Button fx:id="btnLogIn" layoutX="104.0" layoutY="319.0" mnemonicParsing="false" onMouseClicked="#LoginClick" prefHeight="29.3" prefWidth="86.72" style="-fx-background-color: #FD5F00; -fx-background-radius: 23.44;" text="Log In" />
+            <PasswordField fx:id="txtPass" layoutX="54.0" layoutY="254.0" prefHeight="29.3" prefWidth="187.11" style="-fx-background-color: #F6F6E9; -fx-background-radius: 23.44;" />
+         </children></AnchorPane>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="326.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../Downloads/logo%20(1).png" />
