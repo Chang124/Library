@@ -1,6 +1,11 @@
 package application;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,50 +19,59 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class LoginControl {
-	@FXML
-	TextField txtName;
-	@FXML
-	PasswordField txtPass;
-	@FXML
-	Button btnLogIn;
-	
-//    Database dbManager;
-	
     @FXML
-	public void initialize() {
-//		dbManager = new Database();
-		txtName.setText("Chang124");
-		txtPass.setText("123");
-	}
+    TextField txtName;
+    @FXML
+    PasswordField txtPass;
+    @FXML
+    Button btnLogIn;
 
-	@FXML
-	public void LoginClick(MouseEvent event) throws IOException {
-		String name = txtName.getText();
-		String pass = txtPass.getText();
+    @FXML
+    public void initialize() {
+        txtName.setText("UserName");
+        txtPass.setText("Password");
+    }
 
-		if(name.equals("Chang124") && pass.equals("123")) {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
+    @FXML
+    public void LoginClick(MouseEvent event) throws IOException {
+        String name = txtName.getText();
+        String pass = txtPass.getText();
+
+        if (validateCredentials(name, pass)) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) btnLogIn.getScene().getWindow(); //Get the current window
-            Scene scene = new Scene(root); // Set the new scene to the window
+            Stage stage = (Stage) btnLogIn.getScene().getWindow();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("Dashboard");
             stage.show();
-		}
-	}
-	
-//		if (dbManager.validateCredentials(name, pass)) {
-//			showAlert(AlertType.INFORMATION, "Login Successful", "Welcome, " + name + "!");
-//		    } else {
-//		    	showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
-//		      }
-//	}
+        } else {
+            showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
+        }
+    }
 
-//	private void showAlert(AlertType alertType, String title, String message) {
-//		Alert alert = new Alert(alertType);
-//		alert.setTitle(title);
-//		alert.setHeaderText(null);
-//		alert.setContentText(message);
-//		alert.showAndWait();
-//    }
+    private boolean validateCredentials(String username, String password) {
+        String query = "SELECT * FROM staff WHERE staffName = ? AND password = ?";
+
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Error validating credentials: " + e);
+            return false;
+        }
+    }
+
+    private void showAlert(AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

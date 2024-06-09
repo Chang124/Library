@@ -1,163 +1,256 @@
 package application;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class CustomerControl {
-	// navbar
-	@FXML
-	Label staffName;
-	@FXML
-	Button btnLoan;
-	@FXML
-	Button btnBook;
-	@FXML
-	Button btnBorrow;
-	@FXML
-	Button btnReturn;
-	@FXML
-	Button btnDashboard;
-	@FXML
-	Button btnCategory;
-	@FXML
-	Button btnLogout;
-	
-	// func
-	@FXML
-	TextField txtSearch;
-	@FXML
-	Button btnSearch;
-	@FXML
-	Button btnAddCustomer;
-	@FXML
-	Button btnUpdateCustomer;
-	@FXML
-	Button btnDeleteCustomer;
-	
-	//view
-	@FXML
-	TableView tbCustomer;
-	
-	@FXML
-	public void DashboardClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
-        Parent root = loader.load();	
-        Stage stage = (Stage) btnBorrow.getScene().getWindow(); //Get the current window
-	    Scene scene = new Scene(root); // Set the new scene to the window
+    // Navbar
+    @FXML
+    Label staffName;
+    @FXML
+    Button btnLoan;
+    @FXML
+    Button btnBook;
+    @FXML
+    Button btnBorrow;
+    @FXML
+    Button btnReturn;
+    @FXML
+    Button btnDashboard;
+    @FXML
+    Button btnCategory;
+    @FXML
+    Button btnLogout;
+    
+    // Func
+    @FXML
+    TextField txtSearch;
+    @FXML
+    Button btnSearch;
+    @FXML
+    Button btnAddCustomer;
+    @FXML
+    Button btnUpdateCustomer;
+    @FXML
+    Button btnDeleteCustomer;
+    
+    // View
+    @FXML
+    TableView<Customer> tbCustomer;
+    @FXML
+    private TableColumn<Customer, Integer> colCusID;
+    @FXML
+    private TableColumn<Customer, String> colCusName;
+    @FXML
+    private TableColumn<Customer, String> colPhone;
+
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+
+    @FXML
+    public void initialize() {
+        // Initialize columns
+        colCusID.setCellValueFactory(new PropertyValueFactory<>("cusID"));
+        colCusName.setCellValueFactory(new PropertyValueFactory<>("cusName"));
+        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        // Load data into TableView
+        loadCustomers();
+    }
+
+    @FXML
+    public void DashboardClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnDashboard.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Dashboard");
         stage.show();
-	}
-		
-	@FXML
-	public void LoanClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
+    }
+
+    @FXML
+    public void LoanClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow(); //Get the current window
-        Scene scene = new Scene(root); // Set the new scene to the window
+        Stage stage = (Stage) btnLoan.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Loan Information");
         stage.show();
-	}
-		
-	@FXML
-	public void BookClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
+    }
+
+    @FXML
+    public void BookClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) btnBook.getScene().getWindow(); //Get the current window
-        Scene scene = new Scene(root); // Set the new scene to the window
+        Stage stage = (Stage) btnBook.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Book Information");
         stage.show();
-	}
-		
-	@FXML
-	public void BorrowClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Borrow.fxml"));
+    }
+
+    @FXML
+    public void BorrowClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Borrow.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) btnReturn.getScene().getWindow(); //Get the current window
-        Scene scene = new Scene(root); // Set the new scene to the window
+        Stage stage = (Stage) btnBorrow.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Borrow Information");
         stage.show();
-	}
-		
-	@FXML
-	public void ReturnClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Return.fxml"));
+    }
+
+    @FXML
+    public void ReturnClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Return.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) btnReturn.getScene().getWindow(); //Get the current window
-        Scene scene = new Scene(root); // Set the new scene to the window
+        Stage stage = (Stage) btnReturn.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Return Information");
         stage.show();
-	}
-		
-	@FXML
-	public void CategoryClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Category.fxml"));
+    }
+
+    @FXML
+    public void CategoryClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Category.fxml"));
         Parent root = loader.load();
-        Stage stage = (Stage) btnCategory.getScene().getWindow(); //Get the current window
-        Scene scene = new Scene(root); // Set the new scene to the window
+        Stage stage = (Stage) btnCategory.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Category Information");
-	    stage.show();
-	}
-		
-	@FXML
-	public void LogoutClick(MouseEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Login.fxml"));
-        Parent root = loader.load();	
-        Stage stage = (Stage) btnLogout.getScene().getWindow(); //Get the current window
-	    Scene scene = new Scene(root); // Set the new scene to the window
+        stage.show();
+    }
+
+    @FXML
+    public void LogoutClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Login.fxml"));
+        Parent root = loader.load();
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Login");
         stage.show();
-	}
-		
-	//display tbCustomer
-		
-	// SearchClick
-	public void SearchClick(MouseEvent event) throws IOException {
-			
-	}
+    }
 
-	// AddCustomerClick
-	public void AddCustomerClick(MouseEvent event) throws IOException {
-		Parent root =FXMLLoader.load(getClass().getResource("/ui/NewCustomer.fxml"));
-		Scene scene = new Scene(root);
-		
-		Stage primaryStage = new Stage();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Add New Customer Information");
+    @FXML
+    public void loadCustomers() {
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-		primaryStage.show();
-	}
-		
-	// UpdateCustomerClick
-	public void UpdateCustomerClick(MouseEvent event) throws IOException {
-		Parent root =FXMLLoader.load(getClass().getResource("/ui/UpdateCustomer.fxml"));
-		Scene scene = new Scene(root);
-		
-		Stage primaryStage = new Stage();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Update Customer Information");
+        String query = "SELECT * FROM customer";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
 
-		primaryStage.show();
-	}
+            while (rs.next()) {
+                int cusID = rs.getInt("cusID");
+                String cusName = rs.getString("cusName");
+                String phone = rs.getString("phone");
 
-	// DeleteCustomerClick
-	public void DeleteCustomerClick(MouseEvent event) throws IOException {
-		
-	}
+                Customer customer = new Customer(cusID, cusName, phone);
+                customers.add(customer);
+            }
+
+            tbCustomer.setItems(customers);
+        } catch (SQLException e) {
+            showAlert(AlertType.ERROR, "Error", "Error loading customers: " + e.getMessage());
+        }
+    }
+    
+    @FXML
+    public void SearchClick(MouseEvent event) {
+        String searchText = txtSearch.getText().toLowerCase();
+        if (searchText.isEmpty()) {
+            tbCustomer.setItems(customerList);
+            return;
+        }
+
+        ObservableList<Customer> filteredList = FXCollections.observableArrayList();
+        for (Customer customer : customerList) {
+            if (customer.getCusName().toLowerCase().contains(searchText) ||
+                customer.getPhone().toLowerCase().contains(searchText)) {
+                filteredList.add(customer);
+            }
+        }
+
+        tbCustomer.setItems(filteredList);
+    }
+
+    @FXML
+    public void AddCustomerClick(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/NewCustomer.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Add New Customer Information");
+        stage.showAndWait(); // Wait for the new customer window to close
+        loadCustomers(); // Refresh the customer list after adding
+    }
+
+    @FXML
+    public void UpdateCustomerClick(MouseEvent event) throws IOException {
+        Customer selectedCustomer = tbCustomer.getSelectionModel().getSelectedItem();
+        if (selectedCustomer != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateCustomer.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Update Customer Information");
+            stage.showAndWait(); // Wait for the update customer window to close
+            loadCustomers(); // Refresh the customer list after updating
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a customer to update.");
+        }
+    }
+
+    @FXML
+    public void DeleteCustomerClick(MouseEvent event) {
+        Customer selectedCustomer = tbCustomer.getSelectionModel().getSelectedItem();
+        if (selectedCustomer != null) {
+            String query = "DELETE FROM customer WHERE cusID = ?";
+            try (Connection conn = Connect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+                pstmt.setInt(1, selectedCustomer.getCusID());
+                pstmt.executeUpdate();
+                customerList.remove(selectedCustomer);
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer deleted successfully.");
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Error deleting customer: " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a customer to delete.");
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
