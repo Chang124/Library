@@ -19,9 +19,9 @@
       </Label>
       <TableView fx:id="tbCustomer" layoutX="157.0" layoutY="110.0" prefHeight="130.0" prefWidth="615.0">
          <columns>
-            <TableColumn prefWidth="184.79998779296875" text="Customer ID" />
-            <TableColumn prefWidth="232.800048828125" text="Customer Name" />
-            <TableColumn prefWidth="197.59991455078125" text="Phone Number" />
+            <TableColumn fx:id="colCusID" prefWidth="184.79998779296875" text="Customer ID" />
+            <TableColumn fx:id="colCusName" prefWidth="232.800048828125" text="Customer Name" />
+            <TableColumn fx:id="colPhone" prefWidth="197.59991455078125" text="Phone Number" />
          </columns>
       </TableView>
       <TextField fx:id="txtSearch" layoutX="168.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72; -fx-background-color: #F6F6E9;" />
