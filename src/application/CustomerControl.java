@@ -77,6 +77,7 @@ public class CustomerControl {
         loadCustomers();
     }
 
+
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
@@ -180,9 +181,9 @@ public class CustomerControl {
     
     @FXML
     public void SearchClick(MouseEvent event) {
-        String searchText = txtSearch.getText().toLowerCase();
+        String searchText = txtSearch.getText().toLowerCase().trim();
         if (searchText.isEmpty()) {
-            tbCustomer.setItems(customerList);
+            tbCustomer.setItems(customerList); // Display all customers if search text is empty
             return;
         }
 
@@ -194,8 +195,9 @@ public class CustomerControl {
             }
         }
 
-        tbCustomer.setItems(filteredList);
+        tbCustomer.setItems(filteredList); // Display filtered list in TableView
     }
+
 
     @FXML
     public void AddCustomerClick(MouseEvent event) throws IOException {
@@ -236,8 +238,12 @@ public class CustomerControl {
 
                 pstmt.setInt(1, selectedCustomer.getCusID());
                 pstmt.executeUpdate();
-                customerList.remove(selectedCustomer);
+                tbCustomer.getItems().remove(selectedCustomer);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Customer deleted successfully.");
+
+                // Refresh the customer list in the main view
+                CustomerControl controller = new CustomerControl();
+                controller.loadCustomers();
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Error deleting customer: " + e.getMessage());
             }

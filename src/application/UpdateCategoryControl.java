@@ -38,6 +38,7 @@ public class UpdateCategoryControl {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, categoryName);
             pstmt.setString(2, categoryID);
+            
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
