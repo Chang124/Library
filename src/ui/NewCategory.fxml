@@ -13,20 +13,13 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="41.0" layoutY="72.0" text="Category ID">
+      <Label layoutX="41.0" layoutY="72.0" text="Category Name">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <!-- Corrected fx:id to txtCategoryID -->
-      <TextField fx:id="txtCategoryID" layoutX="41.0" layoutY="92.0" prefHeight="26.0" prefWidth="328.0" />
-      <Label layoutX="41.0" layoutY="131.0" text="Category Name">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <!-- Corrected fx:id to txtCategoryName -->
-      <TextField fx:id="txtCategoryName" layoutX="41.0" layoutY="151.0" prefHeight="26.0" prefWidth="328.0" />
+      <TextField fx:id="txtCategoryName" layoutX="41.0" layoutY="92.0" prefHeight="26.0" prefWidth="328.0" />
       <Button fx:id="btnCreate" layoutX="215.0" layoutY="330.0" mnemonicParsing="false" onMouseClicked="#CreateClick" style="-fx-background-color: #2042AC; -fx-background-radius: 4;" text="Create" textFill="WHITE">
          <font>
             <Font size="20.0" />

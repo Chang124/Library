@@ -18,7 +18,7 @@ public class Main extends Application{
 //			Scene scene = new Scene(root,400,400);
 //			scene.getStylesheets().add(getClass().getResource("Login.fxml").toExternalForm());
 			
-			Parent root = FXMLLoader.load(getClass().getResource("/ui/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/ui/Dashboard.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
             primaryStage.setTitle("Login");
