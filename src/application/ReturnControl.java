@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -58,13 +59,11 @@ public class ReturnControl {
     @FXML
     private TableColumn<Return, Integer> borrowIDColumn;
     @FXML
-    private TableColumn<Return, Integer> cusIDColumn;
+    private TableColumn<Return, Integer> customerNameColumn;
     @FXML
-    private TableColumn<Return, Integer> bookIDColumn;
+    private TableColumn<Return, Integer> titleColumn;
     @FXML
     private TableColumn<Return, Integer> quantityColumn;
-    @FXML
-    private TableColumn<Return, String> borrowDateColumn;
     @FXML
     private TableColumn<Return, String> returnDateColumn;
     @FXML
@@ -74,14 +73,13 @@ public class ReturnControl {
 
     @FXML
     public void initialize() {
-        borrowIDColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("borrowID"));
-        cusIDColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("cusID"));
-        bookIDColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("bookID"));
-        quantityColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("quantity"));
-        borrowDateColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("borrowDate"));
-        returnDateColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("returnDate"));
-        returnedDateColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("returned_date"));
-        statusColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("status"));
+        borrowIDColumn.setCellValueFactory(new PropertyValueFactory<>("borrowID"));
+        customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("cusName"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title")); // Ánh xạ titleColumn với trường title
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("returned_date"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Load data into the table
         loadReturns();
@@ -168,26 +166,26 @@ public class ReturnControl {
     public void loadReturns() {
         ObservableList<Return> returns = FXCollections.observableArrayList();
 
-        String query = "SELECT br.borrowID, br.cusID, br.staffID, br.bookID, br.quantity, br.released_date, br.return_date, rr.returned_date, " +
+        String query = "SELECT br.borrowID, c.cusName, b.title, br.quantity, br.return_date, rr.returned_date, " +
                        "CASE WHEN rr.returned_date IS NOT NULL THEN 'Returned' ELSE 'Not Returned' END AS status " +
                        "FROM borrow_record br " +
-                       "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID";
+                       "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID " +
+                       "LEFT JOIN customer c ON br.cusID = c.cusID " +
+                       "LEFT JOIN book b ON br.bookID = b.bookID";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 int borrowID = rs.getInt("borrowID");
-                int cusID = rs.getInt("cusID");
-                int staffID = rs.getInt("staffID");
-                int bookID = rs.getInt("bookID");
+                String customerName = rs.getString("cusName");
+                String title = rs.getString("title");
                 int quantity = rs.getInt("quantity");
-                String borrowDate = rs.getString("released_date");
                 String returnDate = rs.getString("return_date");
                 String returned_date = rs.getString("returned_date");
                 String status = rs.getString("status");
 
-                Return ret = new Return(borrowID, cusID, staffID, bookID, quantity, borrowDate, returnDate, returned_date, status);
+                Return ret = new Return(borrowID, customerName, title, quantity, returnDate, returned_date, status);
                 returns.add(ret);
             }
 
@@ -196,24 +194,27 @@ public class ReturnControl {
             showAlert(Alert.AlertType.ERROR, "Error", "Error loading return records: " + e.getMessage());
         }
     }
-
+    
+    
     @FXML
     public void SearchClick(MouseEvent event) {
         String searchText = txtSearch.getText();
         ObservableList<Return> returns = FXCollections.observableArrayList();
 
-        String query = "SELECT br.borrowID, br.cusID, br.staffID, br.bookID, br.quantity, br.released_date, br.return_date, rr.returned_date, " +
+        String query = "SELECT br.borrowID, c.cusName, b.title, br.quantity, br.return_date, rr.returned_date, " +
                        "CASE WHEN rr.returned_date IS NOT NULL THEN 'Returned' ELSE 'Not Returned' END AS status " +
                        "FROM borrow_record br " +
                        "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID " +
-                       "WHERE br.borrowID LIKE ? OR br.cusID LIKE ? OR br.staffID LIKE ? OR br.bookID LIKE ? OR br.quantity LIKE ? " +
-                       "OR br.released_date LIKE ? OR br.return_date LIKE ? OR rr.returned_date LIKE ?";
+                       "LEFT JOIN customer c ON br.cusID = c.cusID " +
+                       "LEFT JOIN book b ON br.bookID = b.bookID " +
+                       "WHERE br.borrowID LIKE ? OR c.customerName LIKE ? OR b.title LIKE ? OR br.quantity LIKE ? " +
+                       "OR br.return_date LIKE ? OR rr.returned_date LIKE ?";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             String searchPattern = "%" + searchText + "%";
-            for (int i = 1; i <= 8; i++) {
+            for (int i = 1; i <= 6; i++) {
                 pstmt.setString(i, searchPattern);
             }
 
@@ -221,22 +222,20 @@ public class ReturnControl {
 
             while (rs.next()) {
                 int borrowID = rs.getInt("borrowID");
-                int cusID = rs.getInt("cusID");
-                int staffID = rs.getInt("staffID");
-                int bookID = rs.getInt("bookID");
+                String customerName = rs.getString("cusName");
+                String title = rs.getString("title");
                 int quantity = rs.getInt("quantity");
-                String borrowDate = rs.getString("released_date");
                 String returnDate = rs.getString("return_date");
                 String returned_date = rs.getString("returned_date");
                 String status = rs.getString("status");
 
-                Return ret = new Return(borrowID, cusID, staffID, bookID, quantity, borrowDate, returnDate, returned_date, status);
+                Return ret = new Return(borrowID, customerName, title, quantity, returnDate, returned_date, status);
                 returns.add(ret);
             }
 
             tbReturn.setItems(returns);
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Error fetching return records: " + e.getMessage());
+          showAlert(Alert.AlertType.ERROR, "Error", "Error fetching return records: " + e.getMessage());
         }
     }
 

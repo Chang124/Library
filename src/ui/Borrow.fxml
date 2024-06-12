@@ -20,9 +20,9 @@
       <TableView fx:id="tbBorrow" layoutX="157.0" layoutY="110.0" prefHeight="130.0" prefWidth="615.0">
          <columns>
             <TableColumn fx:id="borrowIDColumn" prefWidth="75.20001220703125" text="Borrow ID" />
-            <TableColumn fx:id="customerNameColumn" prefWidth="97.5999755859375" text="Customer Name" />
-            <TableColumn fx:id="staffNameColumn" prefWidth="76.0" text="Staff Name" />
-            <TableColumn fx:id="bookTitleColumn" prefWidth="122.39996337890625" text="Book Title" />
+            <TableColumn fx:id="customerNameColumn" prefWidth="97.5999755859375" text="Customer" />
+            <TableColumn fx:id="staffNameColumn" prefWidth="76.0" text="Staff" />
+            <TableColumn fx:id="bookTitleColumn" prefWidth="122.39996337890625" text="Book" />
             <TableColumn fx:id="quantityColumn" prefWidth="76.0" text="Quantity" />
             <TableColumn fx:id="borrowDateColumn" prefWidth="104.800048828125" text="Borrow Date" />
             <TableColumn fx:id="returnDateColumn" prefWidth="104.800048828125" text="Return Date" />

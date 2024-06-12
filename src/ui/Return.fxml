@@ -20,11 +20,11 @@
       <TableView fx:id="tbReturn" layoutX="157.0" layoutY="110.0" prefHeight="130.0" prefWidth="632.0">
          <columns>
             <TableColumn fx:id="borrowIDColumn" prefWidth="73.60003662109375" text="Borrow ID" />
-            <TableColumn fx:id="cusIDColumn" prefWidth="99.199951171875" text="Customer ID" />
-            <TableColumn fx:id="bookIDColumn" prefWidth="73.5999755859375" text="Book ID" />
+            <TableColumn fx:id="customerNameColumn" prefWidth="99.199951171875" text="Customer" />
+            <TableColumn fx:id="titleColumn" prefWidth="73.5999755859375" text="Book" />
             <TableColumn fx:id="quantityColumn" prefWidth="79.20001220703125" text="Quantity" />
-            <TableColumn fx:id="borrowDateColumn" prefWidth="109.60003662109375" text="Borrow Date" />
-            <TableColumn fx:id="returnDateColumn" prefWidth="90.4000244140625" text="Return Date" />
+            <TableColumn fx:id="returnDateColumn" prefWidth="109.60003662109375" text="Due Date" />
+            <TableColumn fx:id="returnedDateColumn" prefWidth="90.4000244140625" text="Return Date" />
             <TableColumn fx:id="statusColumn" prefWidth="102.4000244140625" text="Status" />
          </columns>
       </TableView>
