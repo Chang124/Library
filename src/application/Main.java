@@ -30,12 +30,6 @@ public class Main extends Application{
 	
 	public static void main(String[] args) {
 		launch(args);
-		
-//		Connection conn = Database.getConnection();
-//		if(conn == null) {
-//			System.out.println("FALSE");
-//		} else {
-//			System.out.println("SUCCESS");
-//		}
+
 	}
 }

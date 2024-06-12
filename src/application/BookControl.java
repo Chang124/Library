@@ -259,6 +259,10 @@ public class BookControl {
                 pstmt.executeUpdate();
                 tbBook.getItems().remove(selectedBook);
                 showAlert(AlertType.INFORMATION, "Success", "Book deleted successfully.");
+                
+             // Refresh the category list in the main view
+    		    BookControl controller = new BookControl();
+    		    controller.loadBooks();
             } catch (SQLException e) {
                 showAlert(AlertType.ERROR, "Error", "Error deleting book: " + e.getMessage());
             }

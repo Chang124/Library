@@ -19,13 +19,13 @@
       </Label>
       <TableView fx:id="tbReturn" layoutX="157.0" layoutY="110.0" prefHeight="130.0" prefWidth="632.0">
          <columns>
-            <TableColumn prefWidth="73.60003662109375" text="Borrow ID" />
-            <TableColumn prefWidth="99.199951171875" text="Customer ID" />
-            <TableColumn prefWidth="73.5999755859375" text="Book ID" />
-            <TableColumn prefWidth="79.20001220703125" text="Quantity" />
-            <TableColumn prefWidth="109.60003662109375" text="Borrow Date" />
-            <TableColumn prefWidth="90.4000244140625" text="Return Date" />
-            <TableColumn prefWidth="102.4000244140625" text="Status" />
+            <TableColumn fx:id="borrowIDColumn" prefWidth="73.60003662109375" text="Borrow ID" />
+            <TableColumn fx:id="cusIDColumn" prefWidth="99.199951171875" text="Customer ID" />
+            <TableColumn fx:id="bookIDColumn" prefWidth="73.5999755859375" text="Book ID" />
+            <TableColumn fx:id="quantityColumn" prefWidth="79.20001220703125" text="Quantity" />
+            <TableColumn fx:id="borrowDateColumn" prefWidth="109.60003662109375" text="Borrow Date" />
+            <TableColumn fx:id="returnDateColumn" prefWidth="90.4000244140625" text="Return Date" />
+            <TableColumn fx:id="statusColumn" prefWidth="102.4000244140625" text="Status" />
          </columns>
       </TableView>
       <TextField fx:id="txtSearch" layoutX="157.0" layoutY="53.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72; -fx-background-color: #F6F6E9;" />

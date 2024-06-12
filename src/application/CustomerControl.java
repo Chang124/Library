@@ -77,6 +77,7 @@ public class CustomerControl {
         loadCustomers();
     }
 
+
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
@@ -180,22 +181,34 @@ public class CustomerControl {
     
     @FXML
     public void SearchClick(MouseEvent event) {
-        String searchText = txtSearch.getText().toLowerCase();
-        if (searchText.isEmpty()) {
-            tbCustomer.setItems(customerList);
-            return;
-        }
+        String searchText = txtSearch.getText();
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        ObservableList<Customer> filteredList = FXCollections.observableArrayList();
-        for (Customer customer : customerList) {
-            if (customer.getCusName().toLowerCase().contains(searchText) ||
-                customer.getPhone().toLowerCase().contains(searchText)) {
-                filteredList.add(customer);
+        String query = "SELECT * FROM customer WHERE cusName LIKE ? OR phone LIKE ?";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            String searchPattern = "%" + searchText + "%";
+            pstmt.setString(1, searchPattern);
+            pstmt.setString(2, searchPattern);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int cusID = rs.getInt("cusID");
+                String cusName = rs.getString("cusName");
+                String phone = rs.getString("phone");
+
+                Customer customer = new Customer(cusID, cusName, phone);
+                customers.add(customer);
             }
-        }
 
-        tbCustomer.setItems(filteredList);
+            tbCustomer.setItems(customers);
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error fetching customers: " + e.getMessage());
+        }
     }
+
 
     @FXML
     public void AddCustomerClick(MouseEvent event) throws IOException {
@@ -236,8 +249,12 @@ public class CustomerControl {
 
                 pstmt.setInt(1, selectedCustomer.getCusID());
                 pstmt.executeUpdate();
-                customerList.remove(selectedCustomer);
+                tbCustomer.getItems().remove(selectedCustomer);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Customer deleted successfully.");
+
+                // Refresh the customer list in the main view
+                CustomerControl controller = new CustomerControl();
+                controller.loadCustomers();
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Error deleting customer: " + e.getMessage());
             }
