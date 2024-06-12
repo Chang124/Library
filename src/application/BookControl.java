@@ -61,7 +61,7 @@ public class BookControl {
     @FXML
     private TableColumn<Book, String> colTitle;
     @FXML
-    private TableColumn<Book, Integer> colCateId;
+    private TableColumn<Book, String> colCategory;
     @FXML
     private TableColumn<Book, String> colAuthor;
     @FXML
@@ -76,7 +76,7 @@ public class BookControl {
         // Initialize columns
         colId.setCellValueFactory(new PropertyValueFactory<>("bookID"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colCateId.setCellValueFactory(new PropertyValueFactory<>("cateID"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colPublicationYear.setCellValueFactory(new PropertyValueFactory<>("publicationYear"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -85,7 +85,6 @@ public class BookControl {
         // Load data into TableView
         loadBooks();
     }
-
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
@@ -168,7 +167,9 @@ public class BookControl {
     public void loadBooks() {
         ObservableList<Book> books = FXCollections.observableArrayList();
 
-        String query = "SELECT * FROM book";
+        String query = "SELECT b.bookID, b.title, c.cate, b.author, b.publication_year, b.quantity, b.status " +
+                       "FROM book b " +
+                       "JOIN category c ON b.cateID = c.cateID";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
@@ -176,13 +177,13 @@ public class BookControl {
             while (rs.next()) {
                 int bookID = rs.getInt("bookID");
                 String title = rs.getString("title");
-                int cateID = rs.getInt("cateID");
+                String categoryName = rs.getString("cate");
                 String author = rs.getString("author");
                 int publicationYear = rs.getInt("publication_year");
                 int quantity = rs.getInt("quantity");
                 String status = rs.getString("status");
 
-                Book book = new Book(bookID, title, cateID, author, publicationYear, quantity, status);
+                Book book = new Book(bookID, title, categoryName, author, publicationYear, quantity, status);
                 books.add(book);
             }
 
@@ -202,7 +203,10 @@ public class BookControl {
         String searchText = txtSearch.getText();
         ObservableList<Book> books = FXCollections.observableArrayList();
 
-        String query = "SELECT * FROM book WHERE title LIKE ?";
+        String query = "SELECT b.bookID, b.title, c.cate, b.author, b.publication_year, b.quantity, b.status " +
+                       "FROM book b " +
+                       "JOIN category c ON b.cateID = c.cateID " +
+                       "WHERE b.title LIKE ?";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -212,13 +216,13 @@ public class BookControl {
             while (rs.next()) {
                 int bookID = rs.getInt("bookID");
                 String title = rs.getString("title");
-                int cateID = rs.getInt("cateID");
+                String categoryName = rs.getString("cate");
                 String author = rs.getString("author");
                 int publicationYear = rs.getInt("publication_year");
                 int quantity = rs.getInt("quantity");
                 String status = rs.getString("status");
 
-                Book book = new Book(bookID, title, cateID, author, publicationYear, quantity, status);
+                Book book = new Book(bookID, title, categoryName, author, publicationYear, quantity, status);
                 books.add(book);
             }
 
@@ -227,6 +231,7 @@ public class BookControl {
             showAlert(AlertType.ERROR, "Error", "Error fetching books: " + e.getMessage());
         }
     }
+
     @FXML
     public void AddBookClick(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBook.fxml"));
@@ -251,8 +256,8 @@ public class BookControl {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Update Book Information");
-        stage.showAndWait(); // Wait for the update category window to close
-        loadBooks(); // Refresh the category list after updating
+        stage.showAndWait(); // Wait for the update book window to close
+        loadBooks(); // Refresh the book list after updating
     }
 
     @FXML
@@ -283,5 +288,4 @@ public class BookControl {
         alert.setContentText(message);
         alert.showAndWait();
     }
-  
 }
