@@ -19,13 +19,13 @@
       </Label>
       <TableView fx:id="tbBorrow" layoutX="157.0" layoutY="110.0" prefHeight="130.0" prefWidth="615.0">
          <columns>
-            <TableColumn prefWidth="75.20001220703125" text="BorrowID" />
-            <TableColumn prefWidth="97.5999755859375" text="Customer ID" />
-            <TableColumn prefWidth="62.40008544921875" text="Book ID" />
-            <TableColumn prefWidth="76.0" text="Quantity" />
-            <TableColumn prefWidth="76.0" text="Staff ID" />
-            <TableColumn prefWidth="122.39996337890625" text="Borrow Date" />
-            <TableColumn prefWidth="104.800048828125" text="Return Date" />
+            <TableColumn fx:id="borrowIDColumn" prefWidth="75.20001220703125" text="Borrow ID" />
+            <TableColumn fx:id="customerNameColumn" prefWidth="97.5999755859375" text="Customer Name" />
+            <TableColumn fx:id="staffNameColumn" prefWidth="76.0" text="Staff Name" />
+            <TableColumn fx:id="bookTitleColumn" prefWidth="122.39996337890625" text="Book Title" />
+            <TableColumn fx:id="quantityColumn" prefWidth="76.0" text="Quantity" />
+            <TableColumn fx:id="borrowDateColumn" prefWidth="104.800048828125" text="Borrow Date" />
+            <TableColumn fx:id="returnDateColumn" prefWidth="104.800048828125" text="Return Date" />
          </columns>
       </TableView>
       <TextField fx:id="txtSearch" layoutX="168.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72; -fx-background-color: #F6F6E9;" />

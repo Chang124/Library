@@ -181,21 +181,32 @@ public class CustomerControl {
     
     @FXML
     public void SearchClick(MouseEvent event) {
-        String searchText = txtSearch.getText().toLowerCase().trim();
-        if (searchText.isEmpty()) {
-            tbCustomer.setItems(customerList); // Display all customers if search text is empty
-            return;
-        }
+        String searchText = txtSearch.getText();
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        ObservableList<Customer> filteredList = FXCollections.observableArrayList();
-        for (Customer customer : customerList) {
-            if (customer.getCusName().toLowerCase().contains(searchText) ||
-                customer.getPhone().toLowerCase().contains(searchText)) {
-                filteredList.add(customer);
+        String query = "SELECT * FROM customer WHERE cusName LIKE ? OR phone LIKE ?";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            String searchPattern = "%" + searchText + "%";
+            pstmt.setString(1, searchPattern);
+            pstmt.setString(2, searchPattern);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int cusID = rs.getInt("cusID");
+                String cusName = rs.getString("cusName");
+                String phone = rs.getString("phone");
+
+                Customer customer = new Customer(cusID, cusName, phone);
+                customers.add(customer);
             }
-        }
 
-        tbCustomer.setItems(filteredList); // Display filtered list in TableView
+            tbCustomer.setItems(customers);
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Error fetching customers: " + e.getMessage());
+        }
     }
 
 
