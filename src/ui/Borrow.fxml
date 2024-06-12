@@ -12,23 +12,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BorrowControl">
    <children>
-      <Label layoutX="170.0" layoutY="29.0" text="Borrow ID">
+      <Label layoutX="170.0" layoutY="53.0" text="Borrow ID">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <TableView fx:id="tbBorrow" layoutX="157.0" layoutY="110.0" prefHeight="470.0" prefWidth="615.0">
          <columns>
-            <TableColumn fx:id="borrowIDColumn" prefWidth="75.20001220703125" text="Borrow ID" />
-            <TableColumn fx:id="customerNameColumn" prefWidth="97.5999755859375" text="Customer" />
+            <TableColumn fx:id="borrowIDColumn" prefWidth="29.60003662109375" text="ID" />
+            <TableColumn fx:id="customerNameColumn" prefWidth="143.9999237060547" text="Customer" />
             <TableColumn fx:id="staffNameColumn" prefWidth="76.0" text="Staff" />
             <TableColumn fx:id="bookTitleColumn" prefWidth="122.39996337890625" text="Book" />
             <TableColumn fx:id="quantityColumn" prefWidth="76.0" text="Quantity" />
-            <TableColumn fx:id="borrowDateColumn" prefWidth="104.800048828125" text="Borrow Date" />
-            <TableColumn fx:id="returnDateColumn" prefWidth="104.800048828125" text="Return Date" />
+            <TableColumn fx:id="borrowDateColumn" prefWidth="80.00006103515625" text="Borrow Date" />
+            <TableColumn fx:id="returnDateColumn" prefWidth="84.0" text="Return Date" />
          </columns>
       </TableView>
-      <TextField fx:id="txtSearch" layoutX="168.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
+      <TextField fx:id="txtSearch" layoutX="267.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
       <AnchorPane prefHeight="600.0" prefWidth="132.0" style="-fx-background-color: #365478;" />
       <Label fx:id="staffName" layoutX="29.0" layoutY="87.0" text="staffName" textFill="WHITE">
          <font>
@@ -75,5 +75,9 @@
             <Font size="16.0" />
          </font>
       </Button>
+      <Button fx:id="btnSearch" layoutX="439.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#SearchClick" prefHeight="24.22" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Search" textFill="WHITE" />
+      <Button fx:id="btnUpdateBook" layoutX="643.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#UpdateBookClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Update" textFill="WHITE" />
+      <Button fx:id="btnDeleteBook" layoutX="719.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#DeleteBookClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Delete" textFill="WHITE" />
+      <Button fx:id="btnAddBook" layoutX="561.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#AddBookClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Add" textFill="WHITE" />
    </children>
 </AnchorPane>

@@ -12,23 +12,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ReturnControl">
    <children>
-      <Label layoutX="159.0" layoutY="31.0" text="Borrow ID">
+      <Label layoutX="157.0" layoutY="53.0" text="Borrow ID">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <TableView fx:id="tbReturn" layoutX="157.0" layoutY="110.0" prefHeight="476.0" prefWidth="632.0">
          <columns>
-            <TableColumn fx:id="borrowIDColumn" prefWidth="73.60003662109375" text="Borrow ID" />
-            <TableColumn fx:id="customerNameColumn" prefWidth="99.199951171875" text="Customer" />
-            <TableColumn fx:id="titleColumn" prefWidth="73.5999755859375" text="Book" />
-            <TableColumn fx:id="quantityColumn" prefWidth="79.20001220703125" text="Quantity" />
-            <TableColumn fx:id="returnDateColumn" prefWidth="109.60003662109375" text="Due Date" />
-            <TableColumn fx:id="returnedDateColumn" prefWidth="90.4000244140625" text="Return Date" />
-            <TableColumn fx:id="statusColumn" prefWidth="102.4000244140625" text="Status" />
+            <TableColumn fx:id="borrowIDColumn" prefWidth="23.20001220703125" text="ID" />
+            <TableColumn fx:id="customerNameColumn" prefWidth="91.19999694824219" text="Customer" />
+            <TableColumn fx:id="titleColumn" prefWidth="172.0" text="Book" />
+            <TableColumn fx:id="quantityColumn" prefWidth="57.5999755859375" text="Quantity" />
+            <TableColumn fx:id="returnDateColumn" prefWidth="113.60003662109375" text="Due Date" />
+            <TableColumn fx:id="returnedDateColumn" prefWidth="87.99993896484375" text="Return Date" />
+            <TableColumn fx:id="statusColumn" prefWidth="88.7999267578125" text="Status" />
          </columns>
       </TableView>
-      <TextField fx:id="txtSearch" layoutX="157.0" layoutY="53.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
+      <TextField fx:id="txtSearch" layoutX="239.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
       <AnchorPane prefHeight="600.0" prefWidth="132.0" style="-fx-background-color: #365478;">
          <children>
             <ImageView fitHeight="62.0" fitWidth="77.0" layoutX="28.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
@@ -43,7 +43,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="btnSearch" layoutX="309.0" layoutY="53.0" mnemonicParsing="false" prefHeight="24.22" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Search" textFill="WHITE" />
+      <Button fx:id="btnSearch" layoutX="391.0" layoutY="51.0" mnemonicParsing="false" prefHeight="24.22" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Search" textFill="WHITE" />
       <Button fx:id="btnUpdateReturn" layoutX="633.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#UpdateReturnClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Update" textFill="WHITE" />
       <Button fx:id="btnDeleteReturn" layoutX="709.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#DeleteReturnClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Delete" textFill="WHITE" />
       <Button fx:id="btnAddReturn" layoutX="551.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#AddReturnClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Add" textFill="WHITE" />

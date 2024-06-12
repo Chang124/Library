@@ -12,20 +12,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CategoryControl">
    <children>
-      <Label layoutX="170.0" layoutY="29.0" text="Category">
+      <Label layoutX="170.0" layoutY="53.0" text="Category Name">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <TableView fx:id="tbCategory" layoutX="157.0" layoutY="110.0" prefHeight="470.0" prefWidth="615.0">
          <columns>
-            <TableColumn fx:id="colCateID" prefWidth="174.0" text="Cate ID" />
+            <TableColumn fx:id="colCateID" prefWidth="174.0" text="ID" />
             <TableColumn fx:id="colCate" prefWidth="440.0" text="Category" />
          </columns>
       </TableView>
-      <TextField fx:id="txtSearch" layoutX="168.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
+      <TextField fx:id="txtSearch" layoutX="289.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
       <AnchorPane prefHeight="600.0" prefWidth="132.0" style="-fx-background-color: #365478;" />
-      <Button fx:id="btnSearch" layoutX="321.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#SearchClick" prefHeight="24.22" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Search" textFill="WHITE" />
+      <Button fx:id="btnSearch" layoutX="442.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#SearchClick" prefHeight="24.22" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Search" textFill="WHITE" />
       <Button fx:id="btnUpdateCategory" layoutX="633.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#UpdateCategoryClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Update" textFill="WHITE" />
       <Button fx:id="btnDeleteCategory" layoutX="709.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#DeleteCategoryClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Delete" textFill="WHITE" />
       <Button fx:id="btnAddCategory" layoutX="551.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#AddCategoryClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Add" textFill="WHITE" />

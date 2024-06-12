@@ -12,21 +12,21 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CustomerControl">
    <children>
-      <Label layoutX="170.0" layoutY="29.0" text="Customer ID">
+      <Label layoutX="176.0" layoutY="53.0" text="Customer">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <TableView fx:id="tbCustomer" layoutX="157.0" layoutY="110.0" prefHeight="466.0" prefWidth="615.0">
          <columns>
-            <TableColumn fx:id="colCusID" prefWidth="184.79998779296875" text="Customer ID" />
+            <TableColumn fx:id="colCusID" prefWidth="184.79998779296875" text="ID" />
             <TableColumn fx:id="colCusName" prefWidth="232.800048828125" text="Customer Name" />
             <TableColumn fx:id="colPhone" prefWidth="197.59991455078125" text="Phone Number" />
          </columns>
       </TableView>
-      <TextField fx:id="txtSearch" layoutX="168.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
+      <TextField fx:id="txtSearch" layoutX="272.0" layoutY="51.0" prefHeight="24.22" prefWidth="132.03" style="-fx-background-radius: 11.72;" />
       <AnchorPane prefHeight="600.0" prefWidth="132.0" style="-fx-background-color: #365478;" />
-      <Button fx:id="btnSearch" layoutX="321.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#SearchClick" prefHeight="24.22" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Search" textFill="WHITE" />
+      <Button fx:id="btnSearch" layoutX="425.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#SearchClick" prefHeight="24.22" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Search" textFill="WHITE" />
       <Button fx:id="btnUpdateCustomer" layoutX="633.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#UpdateCustomerClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Update" textFill="WHITE" />
       <Button fx:id="btnDeleteCustomer" layoutX="709.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#DeleteCustomerClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Delete" textFill="WHITE" />
       <Button fx:id="btnAddCustomer" layoutX="551.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#AddCustomerClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: #365478; -fx-background-radius: 25;" text="Add" textFill="WHITE" />
