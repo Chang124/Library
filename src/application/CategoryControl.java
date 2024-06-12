@@ -74,6 +74,11 @@ public class CategoryControl {
         // Load data into TableView
         loadCategories();
     }
+    
+    @FXML
+    public TableView<Category> getTbCategory() {
+        return tbCategory;
+    }
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
@@ -218,6 +223,10 @@ public class CategoryControl {
         if (selectedCategory != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateCategory.fxml"));
             Parent root = loader.load();
+            
+            UpdateCategoryControl controller = loader.getController();
+            controller.setTbCategory(tbCategory);
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

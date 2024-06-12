@@ -54,10 +54,8 @@ public class BookControl {
     @FXML
     Button btnDeleteBook;
 
-    // View
     @FXML
     private TableView<Book> tbBook;
-
     @FXML
     private TableColumn<Book, Integer> colId;
     @FXML
@@ -190,8 +188,13 @@ public class BookControl {
 
             tbBook.setItems(books);
         } catch (SQLException e) {
-            showAlert(AlertType.ERROR, "Error", "Error loading books: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Error loading books: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public TableView<Book> getTbBook() {
+        return tbBook;
     }
 
     @FXML
@@ -224,7 +227,6 @@ public class BookControl {
             showAlert(AlertType.ERROR, "Error", "Error fetching books: " + e.getMessage());
         }
     }
-
     @FXML
     public void AddBookClick(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBook.fxml"));
@@ -234,17 +236,23 @@ public class BookControl {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Add New Book Information");
         primaryStage.show();
+        loadBooks();
     }
 
     @FXML
     public void UpdateBookClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/UpdateBook.fxml"));
-        Scene scene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateBook.fxml"));
+        Parent root = loader.load();
 
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Update Book Information");
-        primaryStage.show();
+        UpdateBookControl controller = loader.getController();
+        controller.setTbBook(tbBook); // Pass tbBook reference to UpdateBookControl
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Update Book Information");
+        stage.showAndWait(); // Wait for the update category window to close
+        loadBooks(); // Refresh the category list after updating
     }
 
     @FXML
@@ -258,26 +266,22 @@ public class BookControl {
                 pstmt.setInt(1, selectedBook.getBookID());
                 pstmt.executeUpdate();
                 tbBook.getItems().remove(selectedBook);
-                showAlert(AlertType.INFORMATION, "Success", "Book deleted successfully.");
-                
-             // Refresh the category list in the main view
-    		    BookControl controller = new BookControl();
-    		    controller.loadBooks();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book deleted successfully.");
+
             } catch (SQLException e) {
-                showAlert(AlertType.ERROR, "Error", "Error deleting book: " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Error", "Error deleting book: " + e.getMessage());
             }
         } else {
             showAlert(AlertType.WARNING, "No Selection", "Please select a book to delete.");
         }
     }
 
-    private void showAlert(AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
-
   
 }

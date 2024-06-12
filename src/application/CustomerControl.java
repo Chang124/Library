@@ -180,6 +180,11 @@ public class CustomerControl {
     }
     
     @FXML
+    public TableView<Customer> getTbCustomer() {
+        return tbCustomer;
+    }
+    
+    @FXML
     public void SearchClick(MouseEvent event) {
         String searchText = txtSearch.getText();
         ObservableList<Customer> customers = FXCollections.observableArrayList();
@@ -228,6 +233,10 @@ public class CustomerControl {
         if (selectedCustomer != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateCustomer.fxml"));
             Parent root = loader.load();
+            
+            UpdateCustomerControl controller = loader.getController();
+            controller.setTbCustomer(tbCustomer);
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

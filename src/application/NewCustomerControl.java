@@ -19,8 +19,6 @@ import javafx.stage.Stage;
 public class NewCustomerControl {
 
     @FXML
-    private TextField txtCustomerID;
-    @FXML
     private TextField txtCustomerName;
     @FXML
     private TextField txtPhone;
@@ -31,13 +29,6 @@ public class NewCustomerControl {
 
     @FXML
     public void CreateClick(MouseEvent event) {
-        int customerID;
-        try {
-            customerID = Integer.parseInt(txtCustomerID.getText().trim());
-        } catch (NumberFormatException e) {
-            showAlert(AlertType.WARNING, "Validation Error", "Customer ID must be a number.");
-            return;
-        }
         String customerName = txtCustomerName.getText().trim();
         String phone = txtPhone.getText().trim();
 
@@ -46,13 +37,12 @@ public class NewCustomerControl {
             return;
         }
 
-        String query = "INSERT INTO customer (cusID, cusName, phone) VALUES (?, ?, ?)";
+        String query = "INSERT INTO customer (cusName, phone) VALUES (?, ?)";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setInt(1, customerID);
-            pstmt.setString(2, customerName);
-            pstmt.setString(3, phone);
+            pstmt.setString(1, customerName);
+            pstmt.setString(2, phone);
 
             pstmt.executeUpdate();
 
