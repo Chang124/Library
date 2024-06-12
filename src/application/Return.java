@@ -1,50 +1,39 @@
 package application;
-
 public class Return {
     private int borrowID;
-    private int cusID;
-    private int staffID;
-    private int bookID;
+    private String customerName;
+    private String title; // Thay thế trường bookID bằng title
     private int quantity;
-    private String borrowDate;
     private String returnDate;
     private String returned_date;
     private String status;
 
-    public Return(int borrowID, int cusID, int staffID, int bookID, int quantity, String borrowDate, String returnDate, String returned_date, String status) {
+    public Return(int borrowID, String customerName, String title, int quantity, String returnDate, String returned_date, String status) {
         this.borrowID = borrowID;
-        this.cusID = cusID;
-        this.staffID = staffID;
-        this.bookID = bookID;
+        this.customerName = customerName;
+        this.title = title;
         this.quantity = quantity;
-        this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.returned_date = returned_date;
         this.status = status;
     }
 
+
     public int getBorrowID() {
         return borrowID;
     }
 
-    public int getCusID() {
-        return cusID;
+    public String getCusName() {
+        return customerName;
     }
 
-    public int getStaffID() {
-        return staffID;
-    }
 
-    public int getBookID() {
-        return bookID;
+    public String getTitle() {
+        return title;
     }
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public String getBorrowDate() {
-        return borrowDate;
     }
 
     public String getReturnDate() {
