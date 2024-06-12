@@ -76,8 +76,8 @@
          </font>
       </Button>
       <Button fx:id="btnSearch" layoutX="439.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#SearchClick" prefHeight="24.22" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Search" textFill="WHITE" />
-      <Button fx:id="btnUpdateBook" layoutX="643.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#UpdateBookClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Update" textFill="WHITE" />
-      <Button fx:id="btnDeleteBook" layoutX="719.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#DeleteBookClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Delete" textFill="WHITE" />
-      <Button fx:id="btnAddBook" layoutX="561.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#AddBookClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Add" textFill="WHITE" />
+      <Button fx:id="btnUpdateBook" layoutX="643.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#UpdateBorrowClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Update" textFill="WHITE" />
+      <Button fx:id="btnDeleteBook" layoutX="719.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#DeleteBorrowClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Delete" textFill="WHITE" />
+      <Button fx:id="btnAddBook" layoutX="561.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#AddBorrowClick" prefHeight="26.0" prefWidth="55.0" style="-fx-background-radius: 25; -fx-background-color: #365478;" text="Add" textFill="WHITE" />
    </children>
 </AnchorPane>
