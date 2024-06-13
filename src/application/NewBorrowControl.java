@@ -5,7 +5,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -70,7 +69,7 @@ public class NewBorrowControl {
             pstmt.executeUpdate();
 
             // Show success message
-            showAlert(AlertType.INFORMATION, "Success", "Borrow record added successfully.");
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Borrow record added successfully.");
 
             // Close the current stage
             Stage stage = (Stage) btnCreate.getScene().getWindow();

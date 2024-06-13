@@ -17,7 +17,13 @@ public class Book {
         this.quantity = quantity;
         this.status = status;
     }
-
+    // Constructor chỉ với các thuộc tính cần thiết cho Dashboard
+    public Book(int bookID, String title, String author, int quantity) {
+        this.bookID = bookID;
+        this.title = title;
+        this.author = author;
+        this.quantity = quantity;
+    }
     // Add getter for categoryName
     public String getCategoryName() {
         return categoryName;

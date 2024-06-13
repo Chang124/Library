@@ -75,7 +75,7 @@ public class ReturnControl {
     public void initialize() {
         borrowIDColumn.setCellValueFactory(new PropertyValueFactory<>("borrowID"));
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("cusName"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title")); // Ánh xạ titleColumn với trường title
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("returned_date"));
@@ -239,6 +239,10 @@ public class ReturnControl {
         }
     }
 
+    @FXML
+    public TableView<Return> getTbReturn() {
+        return tbReturn;
+    }
 
     @FXML
     public void AddReturnClick(MouseEvent event) throws IOException {
@@ -254,14 +258,19 @@ public class ReturnControl {
 
     @FXML
     public void UpdateReturnClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/UpdateReturn.fxml"));
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateReturn.fxml"));
+         Parent root = loader.load();
+        
+        UpdateReturnControl controller = loader.getController();
+        controller.setTbReturn(tbReturn); // Pass selected return to the update controller
+
+        Stage stage = new Stage();
         Scene scene = new Scene(root);
-
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Update Return Information");
-
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.setTitle("Update Return Information");
+        stage.showAndWait(); // Wait for the update return window to close
+        loadReturns(); // Refresh the return list after updating
+                
     }
 
     @FXML

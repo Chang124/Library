@@ -47,12 +47,12 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="btnBook" layoutX="-1.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#BookClick" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #365478;" text="Books" textFill="WHITE">
+      <Button fx:id="btnBook" layoutX="-1.0" layoutY="166.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #8392ad;" text="Books" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button layoutX="-1.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #8392ad; -fx-background-radius: 0;" text="Borrow Books" textFill="WHITE">
+      <Button layoutX="-1.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #365478; -fx-background-radius: 0;" text="Borrow Books" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
