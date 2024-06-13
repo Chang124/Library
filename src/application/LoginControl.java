@@ -37,8 +37,8 @@ public class LoginControl {
     @FXML
     public void initialize() {
         // Do not pre-populate username and password fields
-        txtName.setText("User Name");
-        txtPass.setText("Password");
+        txtName.setText("John Doe");
+        txtPass.setText("password1");
     }
 
     @FXML
