@@ -89,9 +89,13 @@ public class CustomerControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
         Parent root = loader.load();
         
-        DashboardControl DashboardControl = loader.getController();
-        DashboardControl.setLoggedInUserName(loggedInUserName);
-        
+      DashboardControl DashboardController = loader.getController();
+	    DashboardController.setLoggedInUserName(loggedInUserName);
+	    
+	    // Calculate total quantity and pass it to the DashboardControl
+	    int totalCustomers = sumCustomer();
+	    dashboardController.totalCustomers(totalCustomers);
+
         Stage stage = (Stage) btnDashboard.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -287,6 +291,24 @@ public class CustomerControl {
         }
     }
 
+    public int sumCustomer() {
+        int sumCustomer = 0;
+        String query = "SELECT COUNT(*) AS totalCustomers FROM customer";
+
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+            	sumCustomer = rs.getInt("totalCustomers");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error calculating total borrowed quantity: " + e.getMessage());
+        }
+        System.out.println("Total Borrowed Quantity: " + sumCustomer); // Debug statement
+        return sumCustomer;
+    }
+    
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

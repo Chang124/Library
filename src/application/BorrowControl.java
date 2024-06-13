@@ -97,18 +97,27 @@ public class BorrowControl {
 
 
     @FXML
-    public void DashboardClick(MouseEvent event) throws IOException {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
-        Parent root = loader.load();
-        
-        DashboardControl DashboardControl = loader.getController();
-        DashboardControl.setLoggedInUserName(loggedInUserName);
-        
-        Stage stage = (Stage) btnDashboard.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Dashboard");
-        stage.show();
+    public void DashboardClick(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
+            Parent root = loader.load();
+            
+            DashboardControl dashboardController = loader.getController();
+            dashboardController.setLoggedInUserName(loggedInUserName);
+            
+            // Calculate and set total borrowed quantity
+            int totalBorrowed = calculateTotalBorrowedQuantity();
+            dashboardController.calculateTotalBorrowedQuantity(totalBorrowed);
+            
+            Stage stage = (Stage) btnDashboard.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Dashboard");
+            stage.show();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -306,6 +315,27 @@ public class BorrowControl {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a borrow record to delete.");
         }
     }
+    
+
+    public int calculateTotalBorrowedQuantity() {
+        int totalBorrowed = 0;
+        String query = "SELECT SUM(quantity) AS totalBorrowed FROM borrow_record";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                totalBorrowed = rs.getInt("totalBorrowed");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error calculating total borrowed quantity: " + e.getMessage());
+        }
+        System.out.println("Total Borrowed Quantity: " + totalBorrowed); // Debug statement
+        return totalBorrowed;
+    }
+
+
+
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

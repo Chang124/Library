@@ -1,11 +1,9 @@
 package application;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +19,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 public class DashboardControl {
     // sidebar
     @FXML
@@ -63,6 +66,8 @@ public class DashboardControl {
     private ObservableList<Book> availableBooks;
     public String loggedInUserName;
 
+
+
     @FXML
     public void initialize() {
         // Initialize columns for the available books table
@@ -73,14 +78,30 @@ public class DashboardControl {
 
         // Load data into the available books table
         loadAvailableBooks();
+        
+        
+     // Get total quantity from BookControl and bind to sumQuantity label
     }
-
+       
     public void setLoggedInUserName(String userName) {
         this.loggedInUserName = userName;
         staffName.setText(loggedInUserName); // Set the label text here
     }
 
-
+    public void setTotalQuantity(int totalQuantity) {
+        sumQuantity.setText(String.valueOf(totalQuantity));
+    }
+    
+    public void calculateTotalBorrowedQuantity(int totalBorrowed) {
+        System.out.println("Setting Total Borrowed Quantity: " + totalBorrowed); // Debug statement
+        sumBorrow.setText(String.valueOf(totalBorrowed));
+    }
+    
+    public void totalCustomers(int totalCustomers) {
+    	sumCustomer.setText(String.valueOf(totalCustomers));
+    }
+    
+    
     @FXML
     public void BookClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
