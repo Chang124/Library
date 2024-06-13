@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 public class DashboardControl {
     // sidebar
     @FXML
@@ -276,6 +277,23 @@ public class DashboardControl {
         return totalCustomers;
     }
 
+    public int calculateTotalQuantity() {
+        int totalQuantity = 0;
+        String query = "SELECT SUM(quantity) AS totalQuantity FROM book";
+        
+        try (Connection conn = Connect.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                totalQuantity = rs.getInt("totalQuantity");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error calculating total quantity: " + e.getMessage());
+        }
+        
+        return totalQuantity;
+    }
     
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
