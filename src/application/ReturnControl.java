@@ -183,12 +183,14 @@ public class ReturnControl {
     public void loadReturns() {
         ObservableList<Return> returns = FXCollections.observableArrayList();
 
-        String query = "SELECT br.borrowID, c.cusName, b.title, br.quantity, br.return_date, rr.returned_date, " +
-                       "CASE WHEN rr.returned_date IS NOT NULL THEN 'Returned' ELSE 'Not Returned' END AS status " +
-                       "FROM borrow_record br " +
-                       "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID " +
-                       "LEFT JOIN customer c ON br.cusID = c.cusID " +
-                       "LEFT JOIN book b ON br.bookID = b.bookID";
+        String query = "SELECT rr.borrowID, c.cusName, b.title, br.quantity, br.return_date, rr.returned_date, " +
+                "CASE WHEN rr.returned_date IS NOT NULL THEN 'Returned' ELSE 'Not Returned' END AS status " +
+                "FROM borrow_record br " +
+                "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID " +
+                "LEFT JOIN customer c ON br.cusID = c.cusID " +
+                "LEFT JOIN book b ON br.bookID = b.bookID " +
+                "WHERE rr.borrowID > 0";
+
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
@@ -218,13 +220,13 @@ public class ReturnControl {
         String searchText = txtSearch.getText();
         ObservableList<Return> returns = FXCollections.observableArrayList();
 
-        String query = "SELECT br.borrowID, c.cusName, b.title, br.quantity, br.return_date, rr.returned_date, " +
+        String query = "SELECT rr.borrowID, c.cusName, b.title, br.quantity, br.return_date, rr.returned_date, " +
                        "CASE WHEN rr.returned_date IS NOT NULL THEN 'Returned' ELSE 'Not Returned' END AS status " +
                        "FROM borrow_record br " +
                        "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID " +
                        "LEFT JOIN customer c ON br.cusID = c.cusID " +
                        "LEFT JOIN book b ON br.bookID = b.bookID " +
-                       "WHERE br.borrowID LIKE ? ";
+                       "WHERE rr.borrowID LIKE ? ";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -267,6 +269,7 @@ public class ReturnControl {
         primaryStage.setTitle("Add New Return Information");
 
         primaryStage.show();
+        loadReturns();
     }
 
     @FXML

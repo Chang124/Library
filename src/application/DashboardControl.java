@@ -68,7 +68,6 @@ public class DashboardControl {
     public String loggedInUserName;
 
 
-
     @FXML
     public void initialize() {
         // Initialize columns for the available books table
@@ -79,27 +78,44 @@ public class DashboardControl {
 
         // Load data into the available books table
         loadAvailableBooks();
-        
-        
-     // Get total quantity from BookControl and bind to sumQuantity label
+
+        try {
+            // Set the logged in user name
+            staffName.setText(loggedInUserName);
+
+            // Get total quantity and update label
+            int totalQuantity = getTotalQuantity();
+            sumQuantity.setText(String.valueOf(totalQuantity));
+
+            // Get total borrowed and update label
+            int totalBorrowed = getTotalBorrowed();
+            sumBorrow.setText(String.valueOf(totalBorrowed));
+
+            // Get total customers and update label
+            int totalCustomers = getTotalCustomers();
+            sumCustomer.setText(String.valueOf(totalCustomers));
+
+            // Update sum inventory
+            updateSumInventory();
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error fetching data from database: " + e.getMessage());
+        }
     }
+
        
     public void setLoggedInUserName(String userName) {
         this.loggedInUserName = userName;
         staffName.setText(loggedInUserName); // Set the label text here
     }
+    
+    private void updateSumInventory() {
+        // Calculate sumInventory
+        int quantity = Integer.parseInt(sumQuantity.getText());
+        int borrow = Integer.parseInt(sumBorrow.getText());
+        int inventory = quantity + borrow;
 
-    public void setTotalQuantity(int totalQuantity) {
-        sumQuantity.setText(String.valueOf(totalQuantity));
-    }
-    
-    public void calculateTotalBorrowedQuantity(int totalBorrowed) {
-        System.out.println("Setting Total Borrowed Quantity: " + totalBorrowed); // Debug statement
-        sumBorrow.setText(String.valueOf(totalBorrowed));
-    }
-    
-    public void totalCustomers(int totalCustomers) {
-    	sumCustomer.setText(String.valueOf(totalCustomers));
+        // Set the sumInventory label
+        sumInventory.setText(String.valueOf(inventory));
     }
     
     
@@ -218,6 +234,47 @@ public class DashboardControl {
 
     public ObservableList<Book> getAvailableBooks() {
         return availableBooks;
+    }
+    private int getTotalQuantity() throws SQLException {
+        int totalQuantity = 0;
+        String query = "SELECT SUM(quantity) AS total FROM book";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                totalQuantity = rs.getInt("total");
+            }
+        }
+        return totalQuantity;
+    }
+
+    private int getTotalBorrowed() throws SQLException {
+        int totalBorrowed = 0;
+        String query = "SELECT COUNT(*) AS total FROM borrow_record";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                totalBorrowed = rs.getInt("total");
+            }
+        }
+        return totalBorrowed;
+    }
+
+    private int getTotalCustomers() throws SQLException {
+        int totalCustomers = 0;
+        String query = "SELECT COUNT(*) AS total FROM customer";
+        try (Connection conn = Connect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                totalCustomers = rs.getInt("total");
+            }
+        }
+        return totalCustomers;
     }
 
     public int calculateTotalQuantity() {
