@@ -104,10 +104,6 @@ public class BookControl {
     	    DashboardControl DashboardControl = loader.getController();
     	    DashboardControl.setLoggedInUserName(loggedInUserName);
     	    
-    	    // Calculate total quantity and pass it to the DashboardControl
-    	    int totalQuantity = calculateTotalQuantity();
-    	    DashboardControl.setTotalQuantity(totalQuantity);
-    	    
     	    Stage stage = (Stage) btnDashboard.getScene().getWindow();
     	    Scene scene = new Scene(root);
     	    stage.setScene(scene);

@@ -105,10 +105,6 @@ public class BorrowControl {
             DashboardControl DashboardControl = loader.getController();
             DashboardControl.setLoggedInUserName(loggedInUserName);
             
-            // Calculate and set total borrowed quantity
-            int totalBorrowed = calculateTotalBorrowedQuantity();
-            DashboardControl.calculateTotalBorrowedQuantity(totalBorrowed);
-            
             Stage stage = (Stage) btnDashboard.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);

@@ -269,6 +269,7 @@ public class ReturnControl {
         primaryStage.setTitle("Add New Return Information");
 
         primaryStage.show();
+        loadReturns();
     }
 
     @FXML

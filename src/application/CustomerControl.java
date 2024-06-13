@@ -91,10 +91,7 @@ public class CustomerControl {
         
         DashboardControl DashboardControl = loader.getController();
 	    DashboardControl.setLoggedInUserName(loggedInUserName);
-	    
-	    // Calculate total quantity and pass it to the DashboardControl
-	    int totalCustomers = sumCustomer();
-	    DashboardControl.totalCustomers(totalCustomers);
+	   
 
         Stage stage = (Stage) btnDashboard.getScene().getWindow();
         Scene scene = new Scene(root);
