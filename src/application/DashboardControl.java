@@ -206,4 +206,5 @@ public class DashboardControl {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }
