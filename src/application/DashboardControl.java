@@ -25,7 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 public class DashboardControl {
-    // Navbar
+    // sidebar
     @FXML
     private Label staffName;
     @FXML
@@ -51,7 +51,7 @@ public class DashboardControl {
     @FXML
     private Label sumCustomer;
 
-    // View
+    // view
     @FXML
     private TableView<Book> tbAvailableBook;
     @FXML
@@ -85,7 +85,7 @@ public class DashboardControl {
        
     public void setLoggedInUserName(String userName) {
         this.loggedInUserName = userName;
-        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+        staffName.setText(loggedInUserName); // Set the label text here
     }
 
     public void setTotalQuantity(int totalQuantity) {
@@ -107,8 +107,8 @@ public class DashboardControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
         Parent root = loader.load();
         
-        BookControl BookController = loader.getController();
-        BookController.setLoggedInUserName(loggedInUserName); // Pass the logged in username to NewBookControl
+        BookControl BookControl = loader.getController();
+        BookControl.setLoggedInUserName(loggedInUserName); // Pass the logged in username to NewBookControl
         
         Stage stage = (Stage) btnBook.getScene().getWindow();
         Scene scene = new Scene(root);
@@ -123,9 +123,9 @@ public class DashboardControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Borrow.fxml"));
         Parent root = loader.load();
         
-        BorrowControl borrowController = loader.getController();
-        borrowController.initData(availableBooks); // Pass available books data to BorrowController
-        borrowController.setLoggedInUserName(loggedInUserName);
+        BorrowControl BorrowControl = loader.getController();
+        BorrowControl.initData(availableBooks); // Pass available books data to BorrowController
+        BorrowControl.setLoggedInUserName(loggedInUserName);
         
         Stage stage = (Stage) btnBorrow.getScene().getWindow();
         Scene scene = new Scene(root);
