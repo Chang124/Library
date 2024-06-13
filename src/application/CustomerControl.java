@@ -89,12 +89,12 @@ public class CustomerControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
         Parent root = loader.load();
         
-      DashboardControl DashboardController = loader.getController();
-	    DashboardController.setLoggedInUserName(loggedInUserName);
+        DashboardControl DashboardControl = loader.getController();
+	    DashboardControl.setLoggedInUserName(loggedInUserName);
 	    
 	    // Calculate total quantity and pass it to the DashboardControl
 	    int totalCustomers = sumCustomer();
-	    dashboardController.totalCustomers(totalCustomers);
+	    DashboardControl.totalCustomers(totalCustomers);
 
         Stage stage = (Stage) btnDashboard.getScene().getWindow();
         Scene scene = new Scene(root);

@@ -117,7 +117,6 @@ public class DashboardControl {
         stage.show();
     }
 
-
     @FXML
     public void BorrowClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Borrow.fxml"));

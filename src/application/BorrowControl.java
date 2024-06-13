@@ -102,12 +102,12 @@ public class BorrowControl {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
             Parent root = loader.load();
             
-            DashboardControl dashboardController = loader.getController();
-            dashboardController.setLoggedInUserName(loggedInUserName);
+            DashboardControl DashboardControl = loader.getController();
+            DashboardControl.setLoggedInUserName(loggedInUserName);
             
             // Calculate and set total borrowed quantity
             int totalBorrowed = calculateTotalBorrowedQuantity();
-            dashboardController.calculateTotalBorrowedQuantity(totalBorrowed);
+            DashboardControl.calculateTotalBorrowedQuantity(totalBorrowed);
             
             Stage stage = (Stage) btnDashboard.getScene().getWindow();
             Scene scene = new Scene(root);
