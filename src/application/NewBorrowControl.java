@@ -5,7 +5,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -30,6 +29,12 @@ public class NewBorrowControl {
     private Button btnCreate; // fx:id should be btnCreate
     @FXML
     private Button btnCancel; // fx:id should be btnCancel
+
+    private int loggedInUserID; // Add this line
+
+    public void setLoggedInUserID(int userID) { // Add this method
+        this.loggedInUserID = userID;
+    }
 
     @FXML
     public void CreateClick(MouseEvent event) {
@@ -57,7 +62,10 @@ public class NewBorrowControl {
             return;
         }
 
-        String query = "INSERT INTO borrow_record (cusID, bookID, quantity, released_date, return_date) VALUES (?, ?, ?, ?, ?)";
+        // Debugging: Print loggedInUserID
+        System.out.println("loggedInUserID: " + loggedInUserID);
+
+        String query = "INSERT INTO borrow_record (cusID, bookID, quantity, released_date, return_date, staffID) VALUES (?, ?, ?, ?, ?, ?)"; // Modified query
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -66,11 +74,12 @@ public class NewBorrowControl {
             pstmt.setInt(3, quantity);
             pstmt.setDate(4, java.sql.Date.valueOf(borrowDate));
             pstmt.setDate(5, java.sql.Date.valueOf(returnDate));
+            pstmt.setInt(6, loggedInUserID); // Add this line
 
             pstmt.executeUpdate();
 
             // Show success message
-            showAlert(AlertType.INFORMATION, "Success", "Borrow record added successfully.");
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Borrow record added successfully.");
 
             // Close the current stage
             Stage stage = (Stage) btnCreate.getScene().getWindow();

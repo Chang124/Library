@@ -54,16 +54,14 @@ public class BookControl {
     @FXML
     Button btnDeleteBook;
 
-    // View
     @FXML
     private TableView<Book> tbBook;
-
     @FXML
     private TableColumn<Book, Integer> colId;
     @FXML
     private TableColumn<Book, String> colTitle;
     @FXML
-    private TableColumn<Book, Integer> colCateId;
+    private TableColumn<Book, String> colCategory;
     @FXML
     private TableColumn<Book, String> colAuthor;
     @FXML
@@ -73,12 +71,13 @@ public class BookControl {
     @FXML
     private TableColumn<Book, String> colStatus;
 
+    private String loggedInUserName;
     @FXML
     public void initialize() {
         // Initialize columns
         colId.setCellValueFactory(new PropertyValueFactory<>("bookID"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colCateId.setCellValueFactory(new PropertyValueFactory<>("cateID"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colPublicationYear.setCellValueFactory(new PropertyValueFactory<>("publicationYear"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -86,6 +85,10 @@ public class BookControl {
 
         // Load data into TableView
         loadBooks();
+    }
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
     }
 
 
@@ -97,17 +100,6 @@ public class BookControl {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Dashboard");
-        stage.show();
-    }
-
-    @FXML
-    public void LoanClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Loan Information");
         stage.show();
     }
 
@@ -170,7 +162,9 @@ public class BookControl {
     public void loadBooks() {
         ObservableList<Book> books = FXCollections.observableArrayList();
 
-        String query = "SELECT * FROM book";
+        String query = "SELECT b.bookID, b.title, c.cate, b.author, b.publication_year, b.quantity, b.status " +
+                       "FROM book b " +
+                       "JOIN category c ON b.cateID = c.cateID";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
@@ -178,20 +172,25 @@ public class BookControl {
             while (rs.next()) {
                 int bookID = rs.getInt("bookID");
                 String title = rs.getString("title");
-                int cateID = rs.getInt("cateID");
+                String categoryName = rs.getString("cate");
                 String author = rs.getString("author");
                 int publicationYear = rs.getInt("publication_year");
                 int quantity = rs.getInt("quantity");
                 String status = rs.getString("status");
 
-                Book book = new Book(bookID, title, cateID, author, publicationYear, quantity, status);
+                Book book = new Book(bookID, title, categoryName, author, publicationYear, quantity, status);
                 books.add(book);
             }
 
             tbBook.setItems(books);
         } catch (SQLException e) {
-            showAlert(AlertType.ERROR, "Error", "Error loading books: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Error loading books: " + e.getMessage());
         }
+    }
+
+    @FXML
+    public TableView<Book> getTbBook() {
+        return tbBook;
     }
 
     @FXML
@@ -199,7 +198,10 @@ public class BookControl {
         String searchText = txtSearch.getText();
         ObservableList<Book> books = FXCollections.observableArrayList();
 
-        String query = "SELECT * FROM book WHERE title LIKE ?";
+        String query = "SELECT b.bookID, b.title, c.cate, b.author, b.publication_year, b.quantity, b.status " +
+                       "FROM book b " +
+                       "JOIN category c ON b.cateID = c.cateID " +
+                       "WHERE b.title LIKE ?";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -209,13 +211,13 @@ public class BookControl {
             while (rs.next()) {
                 int bookID = rs.getInt("bookID");
                 String title = rs.getString("title");
-                int cateID = rs.getInt("cateID");
+                String categoryName = rs.getString("cate");
                 String author = rs.getString("author");
                 int publicationYear = rs.getInt("publication_year");
                 int quantity = rs.getInt("quantity");
                 String status = rs.getString("status");
 
-                Book book = new Book(bookID, title, cateID, author, publicationYear, quantity, status);
+                Book book = new Book(bookID, title, categoryName, author, publicationYear, quantity, status);
                 books.add(book);
             }
 
@@ -227,24 +229,30 @@ public class BookControl {
 
     @FXML
     public void AddBookClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBook.fxml"));
-        Scene scene = new Scene(root);
-
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Add New Book Information");
-        primaryStage.show();
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/NewBook.fxml"));
+         Parent root = loader.load();
+        
+         Stage stage = new Stage();
+         stage.setScene(new Scene(root));
+         stage.setTitle("Add New Borrow Record");
+         stage.showAndWait(); 
+         loadBooks();
     }
 
     @FXML
     public void UpdateBookClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/UpdateBook.fxml"));
-        Scene scene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateBook.fxml"));
+        Parent root = loader.load();
 
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Update Book Information");
-        primaryStage.show();
+        UpdateBookControl controller = loader.getController();
+        controller.setTbBook(tbBook); // Pass tbBook reference to UpdateBookControl
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Update Book Information");
+        stage.showAndWait(); // Wait for the update book window to close
+        loadBooks(); // Refresh the book list after updating
     }
 
     @FXML
@@ -258,26 +266,21 @@ public class BookControl {
                 pstmt.setInt(1, selectedBook.getBookID());
                 pstmt.executeUpdate();
                 tbBook.getItems().remove(selectedBook);
-                showAlert(AlertType.INFORMATION, "Success", "Book deleted successfully.");
-                
-             // Refresh the category list in the main view
-    		    BookControl controller = new BookControl();
-    		    controller.loadBooks();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Book deleted successfully.");
+
             } catch (SQLException e) {
-                showAlert(AlertType.ERROR, "Error", "Error deleting book: " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Error", "Error deleting book: " + e.getMessage());
             }
         } else {
             showAlert(AlertType.WARNING, "No Selection", "Please select a book to delete.");
         }
     }
 
-    private void showAlert(AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-  
 }

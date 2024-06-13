@@ -65,6 +65,7 @@ public class CustomerControl {
     private TableColumn<Customer, String> colPhone;
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+	private String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -77,6 +78,11 @@ public class CustomerControl {
         loadCustomers();
     }
 
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+    }
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
@@ -180,6 +186,11 @@ public class CustomerControl {
     }
     
     @FXML
+    public TableView<Customer> getTbCustomer() {
+        return tbCustomer;
+    }
+    
+    @FXML
     public void SearchClick(MouseEvent event) {
         String searchText = txtSearch.getText();
         ObservableList<Customer> customers = FXCollections.observableArrayList();
@@ -228,6 +239,10 @@ public class CustomerControl {
         if (selectedCustomer != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateCustomer.fxml"));
             Parent root = loader.load();
+            
+            UpdateCustomerControl controller = loader.getController();
+            controller.setTbCustomer(tbCustomer);
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

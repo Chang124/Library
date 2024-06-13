@@ -23,8 +23,6 @@ public class NewBookControl {
     @FXML
     private TextField txtAuthor; // fx:id should be txtAuthor
     @FXML
-    private TextField txtBookID; // fx:id should be txtBookID
-    @FXML
     private TextField txtQuantity; // fx:id should be txtQuantity
     @FXML
     private ComboBox<Category> cbCategory; // fx:id should be cbCategory
@@ -36,10 +34,15 @@ public class NewBookControl {
     private Button btnCancel; // fx:id should be btnCancel
 
     private List<Category> categoriesList = new ArrayList<>();
+    private String loggedInUserName;
 
     @FXML
     public void initialize() {
         populateCategoryComboBox();
+    }
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
     }
 
     private void populateCategoryComboBox() {
@@ -64,12 +67,11 @@ public class NewBookControl {
     public void CreateClick(MouseEvent event) {
         String title = txtTitle.getText();
         String author = txtAuthor.getText();
-        String bookID = txtBookID.getText();
         String quantityText = txtQuantity.getText();
         Category selectedCategory = cbCategory.getValue();
         String yearText = txtYear.getText();
 
-        if (title.isEmpty() || author.isEmpty() || bookID.isEmpty() || quantityText.isEmpty() || selectedCategory == null || yearText.isEmpty()) {
+        if (title.isEmpty() || author.isEmpty() || quantityText.isEmpty() || selectedCategory == null || yearText.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Please fill in all fields.");
             return;
         }
@@ -85,16 +87,16 @@ public class NewBookControl {
             return;
         }
 
-        String query = "INSERT INTO book (title, author, bookID, quantity, cateID, publication_year, status) VALUES (?, ?, ?, ?, ?, ?, 'Available')";
+        String query = "INSERT INTO book (title, author, quantity, cateID, publication_year, staffName, status) VALUES (?, ?, ?, ?, ?, ?, 'Available')";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, title);
             pstmt.setString(2, author);
-            pstmt.setString(3, bookID);
-            pstmt.setInt(4, quantity);
-            pstmt.setInt(5, selectedCategory.getCateID());
-            pstmt.setInt(6, year);
+            pstmt.setInt(3, quantity);
+            pstmt.setInt(4, selectedCategory.getCateID());
+            pstmt.setInt(5, year);
+            pstmt.setString(6, loggedInUserName); // Set the loggedInUserName
 
             pstmt.executeUpdate();
 
@@ -105,9 +107,9 @@ public class NewBookControl {
             Stage stage = (Stage) btnCreate.getScene().getWindow();
             stage.close();
 
-         // Refresh the category list in the main view
-		    BookControl controller = new BookControl();
-		    controller.loadBooks();
+            // Refresh the category list in the main view
+            BookControl controller = new BookControl();
+            controller.loadBooks();
 
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Error adding book: " + e.getMessage());
@@ -151,5 +153,4 @@ public class NewBookControl {
             return category;
         }
     }
-
 }

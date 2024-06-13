@@ -42,7 +42,7 @@ public class CategoryControl {
     @FXML
     Button btnLogout;
 
-    // Func
+    
     @FXML
     TextField txtSearch;
     @FXML
@@ -64,6 +64,7 @@ public class CategoryControl {
     private TableColumn<Category, String> colCate;
 
     private ObservableList<Category> categoryList = FXCollections.observableArrayList();
+	private String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -73,6 +74,16 @@ public class CategoryControl {
 
         // Load data into TableView
         loadCategories();
+    }
+    
+    @FXML
+    public TableView<Category> getTbCategory() {
+        return tbCategory;
+    }
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
     }
 
     @FXML
@@ -86,21 +97,12 @@ public class CategoryControl {
         stage.show();
     }
 
-    @FXML
-    public void LoanClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Loan Information");
-        stage.show();
-    }
 
     @FXML
     public void BookClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
         Parent root = loader.load();
+        
         Stage stage = (Stage) btnBook.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -218,6 +220,10 @@ public class CategoryControl {
         if (selectedCategory != null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateCategory.fxml"));
             Parent root = loader.load();
+            
+            UpdateCategoryControl controller = loader.getController();
+            controller.setTbCategory(tbCategory);
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

@@ -23,7 +23,7 @@
             <TableColumn fx:id="colTitle" prefWidth="200.800048828125" text="Title" />
             <TableColumn fx:id="colAuthor" prefWidth="89.5999755859375" text="Author" />
             <TableColumn fx:id="colPublicationYear" prefWidth="54.4000244140625" text="Year" />
-            <TableColumn fx:id="colCateId" prefWidth="91.20001220703125" text="Category" />
+            <TableColumn fx:id="colCategory" prefWidth="91.20001220703125" text="Category" />
             <TableColumn fx:id="colQuantity" prefWidth="74.39996337890625" text="Quantity" />
             <TableColumn fx:id="colStatus" prefWidth="81.60009765625" text="Status" />
          </columns>
