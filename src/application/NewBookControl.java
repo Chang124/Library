@@ -34,10 +34,15 @@ public class NewBookControl {
     private Button btnCancel; // fx:id should be btnCancel
 
     private List<Category> categoriesList = new ArrayList<>();
+    private String loggedInUserName;
 
     @FXML
     public void initialize() {
         populateCategoryComboBox();
+    }
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
     }
 
     private void populateCategoryComboBox() {
@@ -82,7 +87,7 @@ public class NewBookControl {
             return;
         }
 
-        String query = "INSERT INTO book (title, author, quantity, cateID, publication_year, status) VALUES (?, ?, ?, ?, ?, 'Available')";
+        String query = "INSERT INTO book (title, author, quantity, cateID, publication_year, staffName, status) VALUES (?, ?, ?, ?, ?, ?, 'Available')";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -91,6 +96,7 @@ public class NewBookControl {
             pstmt.setInt(3, quantity);
             pstmt.setInt(4, selectedCategory.getCateID());
             pstmt.setInt(5, year);
+            pstmt.setString(6, loggedInUserName); // Set the loggedInUserName
 
             pstmt.executeUpdate();
 
@@ -101,7 +107,7 @@ public class NewBookControl {
             Stage stage = (Stage) btnCreate.getScene().getWindow();
             stage.close();
 
-         // Refresh the category list in the main view
+            // Refresh the category list in the main view
             BookControl controller = new BookControl();
             controller.loadBooks();
 
@@ -147,5 +153,4 @@ public class NewBookControl {
             return category;
         }
     }
-
 }

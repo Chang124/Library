@@ -30,6 +30,12 @@ public class NewBorrowControl {
     @FXML
     private Button btnCancel; // fx:id should be btnCancel
 
+    private int loggedInUserID; // Add this line
+
+    public void setLoggedInUserID(int userID) { // Add this method
+        this.loggedInUserID = userID;
+    }
+
     @FXML
     public void CreateClick(MouseEvent event) {
         String customerIDText = txtCustomerID.getText();
@@ -56,7 +62,10 @@ public class NewBorrowControl {
             return;
         }
 
-        String query = "INSERT INTO borrow_record (cusID, bookID, quantity, released_date, return_date) VALUES (?, ?, ?, ?, ?)";
+        // Debugging: Print loggedInUserID
+        System.out.println("loggedInUserID: " + loggedInUserID);
+
+        String query = "INSERT INTO borrow_record (cusID, bookID, quantity, released_date, return_date, staffID) VALUES (?, ?, ?, ?, ?, ?)"; // Modified query
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -65,6 +74,7 @@ public class NewBorrowControl {
             pstmt.setInt(3, quantity);
             pstmt.setDate(4, java.sql.Date.valueOf(borrowDate));
             pstmt.setDate(5, java.sql.Date.valueOf(returnDate));
+            pstmt.setInt(6, loggedInUserID); // Add this line
 
             pstmt.executeUpdate();
 

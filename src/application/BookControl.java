@@ -71,6 +71,7 @@ public class BookControl {
     @FXML
     private TableColumn<Book, String> colStatus;
 
+    private String loggedInUserName;
     @FXML
     public void initialize() {
         // Initialize columns
@@ -85,6 +86,11 @@ public class BookControl {
         // Load data into TableView
         loadBooks();
     }
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+    }
+
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
@@ -94,17 +100,6 @@ public class BookControl {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Dashboard");
-        stage.show();
-    }
-
-    @FXML
-    public void LoanClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Loan Information");
         stage.show();
     }
 
@@ -234,14 +229,14 @@ public class BookControl {
 
     @FXML
     public void AddBookClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBook.fxml"));
-        Scene scene = new Scene(root);
-
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Add New Book Information");
-        primaryStage.show();
-        loadBooks();
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/NewBook.fxml"));
+         Parent root = loader.load();
+        
+         Stage stage = new Stage();
+         stage.setScene(new Scene(root));
+         stage.setTitle("Add New Borrow Record");
+         stage.showAndWait(); 
+         loadBooks();
     }
 
     @FXML

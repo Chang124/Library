@@ -70,6 +70,7 @@ public class ReturnControl {
     private TableColumn<Return, String> returnedDateColumn;
     @FXML
     private TableColumn<Return, String> statusColumn;
+	private String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -84,6 +85,12 @@ public class ReturnControl {
         // Load data into the table
         loadReturns();
     }
+    
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+    }
+
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
@@ -96,16 +103,6 @@ public class ReturnControl {
         stage.show();
     }
 
-    @FXML
-    public void LoanClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Loan Information");
-        stage.show();
-    }
 
     @FXML
     public void BookClick(MouseEvent event) throws IOException {
@@ -207,8 +204,7 @@ public class ReturnControl {
                        "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID " +
                        "LEFT JOIN customer c ON br.cusID = c.cusID " +
                        "LEFT JOIN book b ON br.bookID = b.bookID " +
-                       "WHERE br.borrowID LIKE ? OR c.customerName LIKE ? OR b.title LIKE ? OR br.quantity LIKE ? " +
-                       "OR br.return_date LIKE ? OR rr.returned_date LIKE ?";
+                       "WHERE br.borrowID LIKE ? ";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
