@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,13 +95,21 @@ public class BookControl {
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnDashboard.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Dashboard");
-        stage.show();
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
+    	    Parent root = loader.load();
+    	    
+    	    DashboardControl dashboardController = loader.getController();
+    	    dashboardController.setLoggedInUserName(loggedInUserName);
+    	    
+    	    // Calculate total quantity and pass it to the DashboardControl
+    	    int totalQuantity = calculateTotalQuantity();
+    	    dashboardController.setTotalQuantity(totalQuantity);
+    	    
+    	    Stage stage = (Stage) btnDashboard.getScene().getWindow();
+    	    Scene scene = new Scene(root);
+    	    stage.setScene(scene);
+    	    stage.setTitle("Dashboard");
+    	    stage.show();
     }
 
     @FXML
@@ -274,6 +283,24 @@ public class BookControl {
         } else {
             showAlert(AlertType.WARNING, "No Selection", "Please select a book to delete.");
         }
+    }
+    
+    public int calculateTotalQuantity() {
+        int totalQuantity = 0;
+        String query = "SELECT SUM(quantity) AS totalQuantity FROM book";
+        
+        try (Connection conn = Connect.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                totalQuantity = rs.getInt("totalQuantity");
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error calculating total quantity: " + e.getMessage());
+        }
+        
+        return totalQuantity;
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {

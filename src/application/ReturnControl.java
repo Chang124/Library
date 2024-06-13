@@ -208,12 +208,8 @@ public class ReturnControl {
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            String searchPattern = "%" + searchText + "%";
-            for (int i = 1; i <= 6; i++) {
-                pstmt.setString(i, searchPattern);
-            }
-
+            
+            pstmt.setString(1, "%" + searchText + "%"); // Bind search pattern correctly
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -231,9 +227,10 @@ public class ReturnControl {
 
             tbReturn.setItems(returns);
         } catch (SQLException e) {
-          showAlert(Alert.AlertType.ERROR, "Error", "Error fetching return records: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Error fetching return records: " + e.getMessage());
         }
     }
+
 
     @FXML
     public TableView<Return> getTbReturn() {

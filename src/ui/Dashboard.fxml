@@ -74,7 +74,7 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Label layoutX="196.0" layoutY="38.0" text="Sum Quantity">
+      <Label layoutX="196.0" layoutY="38.0" text="Sum Inventory">
          <font>
             <Font size="15.0" />
          </font>
@@ -84,7 +84,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="493.0" layoutY="37.0" text="Sum Inventory">
+      <Label layoutX="493.0" layoutY="37.0" text="Sum Quantity">
          <font>
             <Font size="15.0" />
          </font>
