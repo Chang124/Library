@@ -25,6 +25,14 @@ public class LoginControl {
     private Button btnLogIn;
 
     private static String loggedInUserName;
+    private static int loggedInUserID;
+    
+    public static int getLoggedInUserID() {
+        return loggedInUserID;
+    }
+    public static void setLoggedInUserID(int userID) {
+        loggedInUserID = userID;}
+
 
     @FXML
     public void initialize() {
@@ -58,7 +66,7 @@ public class LoginControl {
     }
 
     private boolean validateCredentials(String username, String password) {
-        String query = "SELECT * FROM staff WHERE staffName = ? AND password = ?";
+        String query = "SELECT staffID, staffName FROM staff WHERE staffName = ? AND password = ?";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -68,6 +76,7 @@ public class LoginControl {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
+                loggedInUserID = rs.getInt("staffID"); // Add this line
                 loggedInUserName = rs.getString("staffName");
                 return true;
             } else {

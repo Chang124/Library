@@ -216,7 +216,7 @@ public class BorrowControl {
         String query = "SELECT br.borrowID, c.cusName, s.staffName, b.title, br.quantity, br.released_date, br.return_date " +
                 "FROM borrow_record br JOIN customer c ON br.cusID = c.cusID " +
                 "JOIN staff s ON br.staffID = s.staffID JOIN book b ON br.bookID = b.bookID " +
-                "WHERE br.borrowID LIKE ? OR c.cusName LIKE ? OR s.staffName LIKE ? OR b.title LIKE ?";
+                "WHERE br.borrowID LIKE ? OR c.cusName LIKE ? OR b.title LIKE ?";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -254,14 +254,16 @@ public class BorrowControl {
     
     @FXML
     public void AddBorrowClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBorrow.fxml"));
-        Scene scene = new Scene(root);
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/NewBorrow.fxml"));
+         Parent root = loader.load();
+         NewBorrowControl newBorrowControl = loader.getController();
+         newBorrowControl.setLoggedInUserID(LoginControl.getLoggedInUserID()); // Pass the logged in user ID
 
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Add New Borrow Information");
-
-        primaryStage.show();
+         Stage stage = new Stage();
+         stage.setScene(new Scene(root));
+         stage.setTitle("Add New Borrow Record");
+         stage.showAndWait(); // Wait for the update book window to close
+         loadBorrows(); 
     }
 
     @FXML

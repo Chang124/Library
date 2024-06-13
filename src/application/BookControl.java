@@ -229,14 +229,14 @@ public class BookControl {
 
     @FXML
     public void AddBookClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBook.fxml"));
-        Scene scene = new Scene(root);
-
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Add New Book Information");
-        primaryStage.show();
-        loadBooks();
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/NewBook.fxml"));
+         Parent root = loader.load();
+        
+         Stage stage = new Stage();
+         stage.setScene(new Scene(root));
+         stage.setTitle("Add New Borrow Record");
+         stage.showAndWait(); 
+         loadBooks();
     }
 
     @FXML
