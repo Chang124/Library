@@ -1,52 +1,54 @@
 package application;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UpdateCustomerControl {
 
     @FXML
-    private TextField txtCustomerID; 
+    private TextField txtCustomerName;
     @FXML
-    private TextField txtCustomerName; 
+    private TextField txtPhone;
     @FXML
-    private TextField txtPhone; 
+    private Button btnUpdate;
     @FXML
-    private Button btnUpdate; 
-    @FXML
-    private Button btnCancel; 
+    private Button btnCancel;
 
-    private Customer selectedCustomer;
-    
-    private int cusID;
+    private TableView<Customer> tbCustomer; // Reference to tbCustomer from CustomerControl
 
-    // Method to initialize selectedCustomer and populate the text fields
-    public void initData(int cusID, String cusName, String phone)  {
-            this.cusID = cusID;
-            txtCustomerID.setText(String.valueOf(cusID));
-            txtCustomerName.setText(cusName);
-            txtPhone.setText(phone);
-        } 
+    public void setTbCustomer(TableView<Customer> tbCustomer) {
+        this.tbCustomer = tbCustomer;
+    }
+
+    @FXML
+    public void initialize() {
+    }
 
     @FXML
     public void UpdateClick(MouseEvent event) {
-     
+    	Customer selectedCustomer = tbCustomer.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            showAlert(Alert.AlertType.ERROR, "Internal Error", "No customer selected for update.");
+            return;
+        }
+
         String customerName = txtCustomerName.getText().trim();
         String phone = txtPhone.getText().trim();
-        int customerID =Integer.parseInt(txtCustomerID.getText());
 
         if (customerName.isEmpty() || phone.isEmpty()) {
-            showAlert(AlertType.WARNING, "Validation Error", "Please fill in all fields.");
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please fill in all fields.");
             return;
         }
 
@@ -56,13 +58,13 @@ public class UpdateCustomerControl {
 
             pstmt.setString(1, customerName);
             pstmt.setString(2, phone);
-            pstmt.setInt(3, customerID);
+            pstmt.setInt(3, selectedCustomer.getCusID());
 
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
                 // Show success message
-                showAlert(AlertType.INFORMATION, "Success", "Customer updated successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer updated successfully.");
 
                 // Close the current stage
                 Stage stage = (Stage) btnUpdate.getScene().getWindow();
@@ -73,10 +75,10 @@ public class UpdateCustomerControl {
                 controller.loadCustomers();
 
             } else {
-                showAlert(AlertType.ERROR, "Error", "Error updating customer. Customer ID might not exist.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Error updating customer. Customer ID might not exist.");
             }
         } catch (SQLException e) {
-            showAlert(AlertType.ERROR, "Database Error", "Error updating customer: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Error updating customer: " + e.getMessage());
         }
     }
 

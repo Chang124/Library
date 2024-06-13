@@ -1,40 +1,45 @@
 package application;
 
-import java.io.IOException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-
 public class UpdateBookControl {
 
     @FXML
-    private TextField txtTitle; // fx:id should be txtTitle
+    private TextField txtTitle;
     @FXML
-    private TextField txtAuthor; // fx:id should be txtAuthor
+    private TextField txtAuthor;
     @FXML
-    private TextField txtBookID; // fx:id should be txtBookID
+    private TextField txtQuantity;
     @FXML
-    private TextField txtQuantity; // fx:id should be txtQuantity
+    private ComboBox<Category> cbCategory;
     @FXML
-    private ComboBox<Category> cbCategory; // fx:id should be cbCategory
+    private TextField txtYear;
     @FXML
-    private TextField txtYear; // fx:id should be txtYear
+    private Button btnUpdate;
     @FXML
-    private Button btnUpdate; // fx:id should be btnUpdate
-    @FXML
-    private Button btnCancel; // fx:id should be btnCancel
+    private Button btnCancel;
 
     private int bookID; // Store the book ID that is being updated
+
+    private TableView<Book> tbBook; // Reference to tbBook from BookControl
+
+    public void setTbBook(TableView<Book> tbBook) {
+        this.tbBook = tbBook;
+    }
 
     @FXML
     public void initialize() {
@@ -43,7 +48,6 @@ public class UpdateBookControl {
 
     public void initData(int bookID, String title, String author, int quantity, int categoryID, int year) {
         this.bookID = bookID;
-        txtBookID.setText(String.valueOf(bookID));
         txtTitle.setText(title);
         txtAuthor.setText(author);
         txtQuantity.setText(String.valueOf(quantity));
@@ -52,6 +56,8 @@ public class UpdateBookControl {
     }
 
     private void populateCategoryComboBox() {
+        ObservableList<Category> categories = FXCollections.observableArrayList();
+
         String query = "SELECT cateID, cate FROM category";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
@@ -60,9 +66,10 @@ public class UpdateBookControl {
             while (rs.next()) {
                 int cateID = rs.getInt("cateID");
                 String category = rs.getString("cate");
-                cbCategory.getItems().add(new Category(cateID, category));
+                categories.add(new Category(cateID, category));
             }
 
+            cbCategory.setItems(categories);
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Error loading categories: " + e.getMessage());
         }
@@ -79,60 +86,70 @@ public class UpdateBookControl {
 
     @FXML
     public void UpdateClick(MouseEvent event) {
-        String title = txtTitle.getText();
-        String author = txtAuthor.getText();
-        int bookID = Integer.parseInt(txtBookID.getText());
-        String quantityText = txtQuantity.getText();
-        Category selectedCategory = cbCategory.getValue();
-        String yearText = txtYear.getText();
-
-        if (title.isEmpty() || author.isEmpty() || quantityText.isEmpty() || selectedCategory == null || yearText.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please fill in all fields.");
+        Book selectedBook = tbBook.getSelectionModel().getSelectedItem();
+        if (tbBook == null) {
+            showAlert(Alert.AlertType.ERROR, "Internal Error", "Category table view is not properly initialized.");
             return;
         }
+        if (selectedBook != null) {
+            String title = txtTitle.getText();
+            String author = txtAuthor.getText();
+            String quantityText = txtQuantity.getText();
+            Category selectedCategory = cbCategory.getValue();
+            String yearText = txtYear.getText();
 
-        int quantity;
-        int year;
-
-        try {
-            quantity = Integer.parseInt(quantityText);
-            year = Integer.parseInt(yearText);
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Quantity and Year must be valid numbers.");
-            return;
-        }
-
-        String query = "UPDATE book SET title = ?, author = ?, quantity = ?, cateID = ?, publication_year = ? WHERE bookID = ?";
-        try (Connection conn = Connect.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, title);
-            pstmt.setString(2, author);
-            pstmt.setInt(3, quantity);
-            pstmt.setInt(4, selectedCategory.getCateID());
-            pstmt.setInt(5, year);
-            pstmt.setInt(6, bookID);
-
-            int affectedRows = pstmt.executeUpdate();
-
-            if (affectedRows > 0) {
-                // Show success message
-                showAlert(AlertType.INFORMATION, "Success", "Book updated successfully.");
-
-                // Close the current stage
-                Stage stage = (Stage) btnUpdate.getScene().getWindow();
-                stage.close();
-
-             // Refresh the category list in the main view
-    		    BookControl controller = new BookControl();
-    		    controller.loadBooks();
-
-            } else {
-                showAlert(AlertType.ERROR, "Error", "Error updating book. Book ID might not exist.");
+            if (title.isEmpty() || author.isEmpty() || quantityText.isEmpty() || selectedCategory == null || yearText.isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Validation Error", "Please fill in all fields.");
+                return;
             }
 
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Error updating book: " + e.getMessage());
+            int quantity;
+            int year;
+
+            try {
+                quantity = Integer.parseInt(quantityText);
+                year = Integer.parseInt(yearText);
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", "Quantity and Year must be valid numbers.");
+                return;
+            }
+
+            String query = "UPDATE book SET title = ?, author = ?, quantity = ?, cateID = ?, publication_year = ? WHERE bookID = ?";
+            try (Connection conn = Connect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(query))
+            {
+                pstmt.setString(1, title);
+                pstmt.setString(2, author);
+                pstmt.setInt(3, quantity);
+                pstmt.setInt(4, selectedCategory.getCateID());
+                pstmt.setInt(5, year);
+                pstmt.setInt(6, selectedBook.getBookID());
+
+                int affectedRows = pstmt.executeUpdate();
+
+                if (affectedRows > 0) {
+                    // Show success message
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Book updated successfully.");
+
+                    // Close the current stage
+                    Stage stage = (Stage) btnUpdate.getScene().getWindow();
+                    stage.close();
+
+                    // Refresh the book list in the main view
+                    if (tbBook != null) {
+                        BookControl controller = new BookControl();
+                        controller.loadBooks();
+                    }
+
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Error updating book. Book ID might not exist.");
+                }
+
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Database Error", "Error updating book: " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a book to update.");
         }
     }
 
@@ -173,5 +190,4 @@ public class UpdateBookControl {
             return category;
         }
     }
-
 }

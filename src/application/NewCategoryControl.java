@@ -15,8 +15,6 @@ import java.sql.SQLException;
 public class NewCategoryControl {
 
     @FXML
-    private TextField txtCategoryID; // fx:id should be txtCategoryID
-    @FXML
     private TextField txtCategoryName; // fx:id should be txtCategoryName
     @FXML
     private Button btnCreate; // fx:id should be btnCreate
@@ -25,20 +23,18 @@ public class NewCategoryControl {
 
     @FXML
     public void CreateClick(MouseEvent event) throws IOException {
-        String categoryID = txtCategoryID.getText();
         String categoryName = txtCategoryName.getText();
 
-        if (categoryID.isEmpty() || categoryName.isEmpty()) {
+        if (categoryName.isEmpty()) {
             // Handle error when fields are empty
             return;
         }
 
         // Insert into database
-		String query = "INSERT INTO category (cateID, cate) VALUES (?, ?)";
+		String query = "INSERT INTO category (cate) VALUES (?)";
 		try (Connection conn = Connect.getConnection();
 		     PreparedStatement pstmt = conn.prepareStatement(query)) {
-		    pstmt.setString(1, categoryID);
-		    pstmt.setString(2, categoryName);
+		    pstmt.setString(1, categoryName);
 		    pstmt.executeUpdate();
 
 		    // Show success message

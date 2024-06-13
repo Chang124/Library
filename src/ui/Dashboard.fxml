@@ -31,12 +31,12 @@
             <Font size="23.0" />
          </font>
       </Label>
-      <TableView fx:id="tbLoan" layoutX="172.0" layoutY="234.0" prefHeight="334.0" prefWidth="598.0">
+      <TableView fx:id="tbAvailableBook" layoutX="172.0" layoutY="234.0" prefHeight="334.0" prefWidth="598.0">
          <columns>
-            <TableColumn prefWidth="27.20001220703125" text="ID" />
-            <TableColumn prefWidth="288.0" text="Title" />
-            <TableColumn prefWidth="205.60003662109375" text="Author" />
-            <TableColumn prefWidth="75.20004882812498" text="Quantity" />
+            <TableColumn fx:id="colBookID" prefWidth="27.20001220703125" text="ID" />
+            <TableColumn fx:id="colTitle" prefWidth="288.0" text="Title" />
+            <TableColumn fx:id="colAuthor" prefWidth="205.60003662109375" text="Author" />
+            <TableColumn fx:id="colQuantity" prefWidth="75.20004882812498" text="Quantity" />
          </columns>
       </TableView>
       <Button layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="132.0" style="-fx-background-color: #8392ad; -fx-background-radius: 0;" text="Dashboard" textFill="WHITE">

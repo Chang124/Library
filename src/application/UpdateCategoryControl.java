@@ -1,21 +1,23 @@
 package application;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class UpdateCategoryControl {
-    @FXML
-    private TextField txtCategoryID;
+
     @FXML
     private TextField txtCategoryName;
     @FXML
@@ -24,53 +26,75 @@ public class UpdateCategoryControl {
     private Button btnCancel;
 
     @FXML
-    public void UpdateClick(MouseEvent event) {
-        String categoryID = txtCategoryID.getText();
-        String categoryName = txtCategoryName.getText();
+    private TableView<Category> tbCategory;
 
-        if (categoryID.isEmpty() || categoryName.isEmpty()) {
-            showAlert(AlertType.WARNING, "Validation Error", "Please enter both category ID and name.");
+    public void setTbCategory(TableView<Category> tbCategory) {
+        this.tbCategory = tbCategory;
+    }
+
+    @FXML
+    public void initialize() {
+    }
+
+    @FXML
+    public void UpdateClick(MouseEvent event) {
+        if (tbCategory == null) {
+            showAlert(Alert.AlertType.ERROR, "Internal Error", "Category table view is not properly initialized.");
             return;
         }
 
-        String query = "UPDATE category SET cate = ? WHERE cateID = ?";
-        try (Connection conn = Connect.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, categoryName);
-            pstmt.setString(2, categoryID);
-            
-            int affectedRows = pstmt.executeUpdate();
+        Category selectedCategory = tbCategory.getSelectionModel().getSelectedItem();
+        if (selectedCategory != null) {
+            String categoryName = txtCategoryName.getText();
 
-            if (affectedRows > 0) {
-                // Show success message
-                showAlert(AlertType.INFORMATION, "Success", "Category updated successfully.");
-
-                // Close the current stage
-                Stage stage = (Stage) btnUpdate.getScene().getWindow();
-                stage.close();
-
-                // Refresh the category list in the main view
-                CategoryControl controller = new CategoryControl();
-                controller.loadCategories();
-            } else {
-                showAlert(AlertType.ERROR, "Error", "Error updating category. Category ID might not exist.");
+            if (categoryName.isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Validation Error", "Please enter a category name.");
+                return;
             }
-        } catch (SQLException e) {
-            showAlert(AlertType.ERROR, "Database Error", "Error updating category: " + e.getMessage());
-        }
-    }
 
-    private void showAlert(AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+            String query = "UPDATE category SET cate = ? WHERE cateID = ?";
+            try (Connection conn = Connect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, categoryName);
+                pstmt.setInt(2, selectedCategory.getCateID());
+
+                int affectedRows = pstmt.executeUpdate();
+
+                if (affectedRows > 0) {
+                    // Show success message
+                    showAlert(Alert.AlertType.INFORMATION, "Success", "Category updated successfully.");
+
+                    // Close the current stage
+                    Stage stage = (Stage) btnUpdate.getScene().getWindow();
+                    stage.close();
+
+                    // Refresh the category list in the main view
+                    CategoryControl controller = new CategoryControl();
+                    controller.loadCategories();
+
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Error updating category. Category ID might not exist.");
+                }
+
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Database Error", "Error updating category: " + e.getMessage());
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a category to update.");
+        }
     }
 
     @FXML
     public void CancelClick(MouseEvent event) {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

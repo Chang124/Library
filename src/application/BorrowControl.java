@@ -23,7 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BorrowControl {
-    // Navbar
     @FXML
     Label staffName;
     @FXML
@@ -40,8 +39,6 @@ public class BorrowControl {
     Button btnCategory;
     @FXML
     Button btnLogout;
-
-    // Functional buttons
     @FXML
     TextField txtSearch;
     @FXML
@@ -52,8 +49,6 @@ public class BorrowControl {
     Button btnUpdateBorrow;
     @FXML
     Button btnDeleteBorrow;
-
-    // TableView
     @FXML
     TableView<Borrow> tbBorrow;
     @FXML
@@ -71,6 +66,8 @@ public class BorrowControl {
     @FXML
     TableColumn<Borrow, String> returnDateColumn;
 
+    private ObservableList<Book> availableBooks;
+
     @FXML
     public void initialize() {
         borrowIDColumn.setCellValueFactory(new PropertyValueFactory<>("borrowID"));
@@ -80,98 +77,110 @@ public class BorrowControl {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("released_date"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("return_date"));
-
-        // Load data into the table
         loadBorrows();
     }
 
-    @FXML
-    public void DashboardClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnDashboard.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Dashboard");
-        stage.show();
+    public void initData(ObservableList<Book> availableBooks) {
+        this.availableBooks = availableBooks;
     }
 
     @FXML
-    public void LoanClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Loan Information");
-        stage.show();
+    public void DashboardClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Dashboard.fxml"));
+            Stage stage = (Stage) btnDashboard.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Dashboard");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void BookClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnBook.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Book Information");
-        stage.show();
+    public void LoanClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Loan.fxml"));
+            Stage stage = (Stage) btnLoan.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Loan Information");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void ReturnClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Return.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnReturn.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Return Information");
-        stage.show();
+    public void BookClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Book.fxml"));
+            Stage stage = (Stage) btnBook.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Book Information");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void CustomerClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Customer.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnCustomer.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Customer Information");
-        stage.show();
+    public void ReturnClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Return.fxml"));
+            Stage stage = (Stage) btnReturn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Return Information");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void CategoryClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Category.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnCategory.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Category Information");
-        stage.show();
+    public void CustomerClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Customer.fxml"));
+            Stage stage = (Stage) btnCustomer.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Customer Information");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void LogoutClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Login.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLogout.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Login");
-        stage.show();
+    public void CategoryClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Category.fxml"));
+            Stage stage = (Stage) btnCategory.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Category Information");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void LogoutClick(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/ui/Login.fxml"));
+            Stage stage = (Stage) btnLogout.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     public void loadBorrows() {
         ObservableList<Borrow> borrows = FXCollections.observableArrayList();
-
         String query = "SELECT br.borrowID, c.cusName, s.staffName, b.title, br.quantity, br.released_date, br.return_date " +
-                       "FROM borrow_record br " +
-                       "JOIN customer c ON br.cusID = c.cusID " +
-                       "JOIN staff s ON br.staffID = s.staffID " +
-                       "JOIN book b ON br.bookID = b.bookID";
-
+                "FROM borrow_record br JOIN customer c ON br.cusID = c.cusID " +
+                "JOIN staff s ON br.staffID = s.staffID JOIN book b ON br.bookID = b.bookID";
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
@@ -184,38 +193,31 @@ public class BorrowControl {
                 int quantity = rs.getInt("quantity");
                 String released_date = rs.getString("released_date");
                 String return_date = rs.getString("return_date");
-
                 Borrow borrow = new Borrow(borrowID, cusName, staffName, title, quantity, released_date, return_date);
                 borrows.add(borrow);
             }
-
             tbBorrow.setItems(borrows);
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Error loading borrows: " + e.getMessage());
         }
     }
 
-
     @FXML
     public void SearchClick(MouseEvent event) {
         String searchText = txtSearch.getText();
         ObservableList<Borrow> borrows = FXCollections.observableArrayList();
-
         String query = "SELECT br.borrowID, c.cusName, s.staffName, b.title, br.quantity, br.released_date, br.return_date " +
-                       "FROM borrow_record br " +
-                       "JOIN customer c ON br.cusID = c.cusID " +
-                       "JOIN staff s ON br.staffID = s.staffID " +
-                       "JOIN book b ON br.bookID = b.bookID " +
-                       "WHERE br.borrowID LIKE ? OR c.cusName LIKE ? OR s.staffName LIKE ? OR b.title LIKE ? OR br.quantity LIKE ? " +
-                       "OR br.released_date LIKE ? OR br.return_date LIKE ?";
+                "FROM borrow_record br JOIN customer c ON br.cusID = c.cusID " +
+                "JOIN staff s ON br.staffID = s.staffID JOIN book b ON br.bookID = b.bookID " +
+                "WHERE br.borrowID LIKE ? OR c.cusName LIKE ? OR s.staffName LIKE ? OR b.title LIKE ?";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            String searchPattern = "%" + searchText + "%";
-            for (int i = 1; i <= 7; i++) {
-                pstmt.setString(i, searchPattern);
-            }
+            pstmt.setString(1, "%" + searchText + "%");
+            pstmt.setString(2, "%" + searchText + "%");
+            pstmt.setString(3, "%" + searchText + "%");
+            pstmt.setString(4, "%" + searchText + "%");
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -227,17 +229,22 @@ public class BorrowControl {
                 int quantity = rs.getInt("quantity");
                 String released_date = rs.getString("released_date");
                 String return_date = rs.getString("return_date");
-
                 Borrow borrow = new Borrow(borrowID, cusName, staffName, title, quantity, released_date, return_date);
                 borrows.add(borrow);
             }
 
             tbBorrow.setItems(borrows);
+
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Error fetching borrows: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Error searching borrows: " + e.getMessage());
         }
     }
-
+    
+    @FXML
+    public TableView<Borrow> getTbBorrow() {
+        return tbBorrow;
+    }
+    
     @FXML
     public void AddBorrowClick(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/ui/NewBorrow.fxml"));
@@ -252,13 +259,18 @@ public class BorrowControl {
 
     @FXML
     public void UpdateBorrowClick(MouseEvent event) throws IOException {
-    	Parent root = FXMLLoader.load(getClass().getResource("/ui/UpdateBorrow.fxml"));
-        Scene scene = new Scene(root);
+    	 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateBorrow.fxml"));
+         Parent root = loader.load();
+        
+        UpdateBorrowControl controller = loader.getController();
+        controller.setTbBorrow(tbBorrow); // Pass tbBook reference to UpdateBookControl
 
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Update Borrow Information");
-        primaryStage.show();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Update Borrow Information");
+        stage.showAndWait(); // Wait for the update book window to close
+        loadBorrows(); // Refresh the book list after updating
     }
 
     @FXML
