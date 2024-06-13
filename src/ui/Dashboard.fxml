@@ -98,22 +98,22 @@
       <Circle fill="#365478" layoutX="400.0" layoutY="94.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" />
       <Circle fill="#365478" layoutX="541.0" layoutY="94.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" />
       <Circle fill="#365478" layoutX="698.0" layoutY="95.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" />
-      <Label layoutX="231.0" layoutY="80.0" text="20" textFill="WHITE">
+      <Label fx:id="sumQuantity" layoutX="231.0" layoutY="80.0" text="20" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="389.0" layoutY="79.0" text="20" textFill="WHITE">
+      <Label fx:id="sumBorrow" layoutX="389.0" layoutY="79.0" text="20" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="530.0" layoutY="79.0" text="20" textFill="WHITE">
+      <Label fx:id="sumInventory" layoutX="530.0" layoutY="79.0" text="20" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="687.0" layoutY="80.0" text="20" textFill="WHITE">
+      <Label fx:id="sumCustomer" layoutX="687.0" layoutY="80.0" text="20" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>

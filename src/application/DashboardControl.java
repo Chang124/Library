@@ -39,6 +39,14 @@ public class DashboardControl {
     private Button btnCategory;
     @FXML
     private Button btnLogout;
+    @FXML
+    private Label sumQuantity;
+    @FXML
+    private Label sumBorrow;
+    @FXML
+    private Label sumInventory;
+    @FXML
+    private Label sumCustomer;
 
     // View
     @FXML
