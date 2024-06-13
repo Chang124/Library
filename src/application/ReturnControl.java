@@ -70,6 +70,7 @@ public class ReturnControl {
     private TableColumn<Return, String> returnedDateColumn;
     @FXML
     private TableColumn<Return, String> statusColumn;
+	private String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -84,6 +85,12 @@ public class ReturnControl {
         // Load data into the table
         loadReturns();
     }
+    
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+    }
+
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {

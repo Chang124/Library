@@ -24,35 +24,36 @@ import javafx.stage.Stage;
 public class DashboardControl {
     // Navbar
     @FXML
-    Label staffName;
+    private Label staffName;
     @FXML
-    Button btnLoan;
+    private Button btnLoan;
     @FXML
-    Button btnBook;
+    private Button btnBook;
     @FXML
-    Button btnBorrow;
+    private Button btnBorrow;
     @FXML
-    Button btnReturn;
+    private Button btnReturn;
     @FXML
-    Button btnCustomer;
+    private Button btnCustomer;
     @FXML
-    Button btnCategory;
+    private Button btnCategory;
     @FXML
-    Button btnLogout;
+    private Button btnLogout;
 
     // View
     @FXML
-    TableView<Book> tbAvailableBook;
+    private TableView<Book> tbAvailableBook;
     @FXML
-    TableColumn<Book, Integer> colBookID;
+    private TableColumn<Book, Integer> colBookID;
     @FXML
-    TableColumn<Book, String> colTitle;
+    private TableColumn<Book, String> colTitle;
     @FXML
-    TableColumn<Book, String> colAuthor;
+    private TableColumn<Book, String> colAuthor;
     @FXML
-    TableColumn<Book, Integer> colQuantity;
+    private TableColumn<Book, Integer> colQuantity;
 
     private ObservableList<Book> availableBooks;
+    public String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -65,35 +66,38 @@ public class DashboardControl {
         // Load data into the available books table
         loadAvailableBooks();
     }
-    
-    @FXML
-    public void LoanClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Loan.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) btnLoan.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Loan Information");
-        stage.show();
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
     }
+
 
     @FXML
     public void BookClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Book.fxml"));
         Parent root = loader.load();
+        
+        BookControl BookController = loader.getController();
+        BookController.setLoggedInUserName(loggedInUserName); // Pass the logged in username to NewBookControl
+        
         Stage stage = (Stage) btnBook.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Book Information");
+        stage.setTitle("New Book");
         stage.show();
     }
+
 
     @FXML
     public void BorrowClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Borrow.fxml"));
         Parent root = loader.load();
+        
         BorrowControl borrowController = loader.getController();
         borrowController.initData(availableBooks); // Pass available books data to BorrowController
+        borrowController.setLoggedInUserName(loggedInUserName);
+        
         Stage stage = (Stage) btnBorrow.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -105,6 +109,10 @@ public class DashboardControl {
     public void ReturnClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Return.fxml"));
         Parent root = loader.load();
+    
+        ReturnControl ReturnControl = loader.getController();
+        ReturnControl.setLoggedInUserName(loggedInUserName); // Pass the logged in username to NewBookControl
+      
         Stage stage = (Stage) btnReturn.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -116,6 +124,10 @@ public class DashboardControl {
     public void CustomerClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Customer.fxml"));
         Parent root = loader.load();
+        
+        CustomerControl CustomerControl = loader.getController();
+        CustomerControl.setLoggedInUserName(loggedInUserName); 
+        
         Stage stage = (Stage) btnCustomer.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -127,6 +139,10 @@ public class DashboardControl {
     public void CategoryClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Category.fxml"));
         Parent root = loader.load();
+        
+        CategoryControl CategoryControl = loader.getController();
+        CategoryControl.setLoggedInUserName(loggedInUserName); 
+        
         Stage stage = (Stage) btnCategory.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

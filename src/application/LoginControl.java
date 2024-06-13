@@ -5,13 +5,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -20,33 +18,42 @@ import javafx.stage.Stage;
 
 public class LoginControl {
     @FXML
-    TextField txtName;
+    private TextField txtName;
     @FXML
-    PasswordField txtPass;
+    private PasswordField txtPass;
     @FXML
-    Button btnLogIn;
+    private Button btnLogIn;
+
+    private static String loggedInUserName;
 
     @FXML
     public void initialize() {
-        txtName.setText("UserName");
+        // Do not pre-populate username and password fields
+        txtName.setText("User Name");
         txtPass.setText("Password");
     }
 
     @FXML
-    public void LoginClick(MouseEvent event) throws IOException {
+    public void LoginClick(MouseEvent event) {
         String name = txtName.getText();
         String pass = txtPass.getText();
 
         if (validateCredentials(name, pass)) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) btnLogIn.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Dashboard");
-            stage.show();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
+                Parent root = loader.load();
+                DashboardControl dashboardController = loader.getController();
+                dashboardController.setLoggedInUserName(loggedInUserName); // Pass the logged in username to DashboardControl
+                Stage stage = (Stage) btnLogIn.getScene().getWindow();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.setTitle("Dashboard");
+                stage.show();
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Error loading Dashboard: " + e.getMessage());
+            }
         } else {
-            showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
+            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
         }
     }
 
@@ -60,14 +67,19 @@ public class LoginControl {
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
 
-            return rs.next();
+            if (rs.next()) {
+                loggedInUserName = rs.getString("staffName");
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Error validating credentials: " + e);
             return false;
         }
     }
 
-    private void showAlert(AlertType alertType, String title, String message) {
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);

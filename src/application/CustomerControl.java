@@ -65,6 +65,7 @@ public class CustomerControl {
     private TableColumn<Customer, String> colPhone;
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+	private String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -77,6 +78,11 @@ public class CustomerControl {
         loadCustomers();
     }
 
+
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+    }
 
     @FXML
     public void DashboardClick(MouseEvent event) throws IOException {

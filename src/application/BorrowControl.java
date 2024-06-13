@@ -67,6 +67,7 @@ public class BorrowControl {
     TableColumn<Borrow, String> returnDateColumn;
 
     private ObservableList<Book> availableBooks;
+	private String loggedInUserName;
 
     @FXML
     public void initialize() {
@@ -83,6 +84,12 @@ public class BorrowControl {
     public void initData(ObservableList<Book> availableBooks) {
         this.availableBooks = availableBooks;
     }
+    
+    public void setLoggedInUserName(String userName) {
+        this.loggedInUserName = userName;
+        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+    }
+
 
     @FXML
     public void DashboardClick(MouseEvent event) {
