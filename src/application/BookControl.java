@@ -24,7 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class BookControl {
-    // Navbar
+    // sidebar
     @FXML
     Label staffName;
     @FXML
@@ -42,7 +42,7 @@ public class BookControl {
     @FXML
     Button btnLogout;
 
-    // Func
+    // func
     @FXML
     TextField txtSearch;
     @FXML
@@ -54,6 +54,7 @@ public class BookControl {
     @FXML
     Button btnDeleteBook;
 
+    // view
     @FXML
     private TableView<Book> tbBook;
     @FXML
@@ -72,6 +73,8 @@ public class BookControl {
     private TableColumn<Book, String> colStatus;
 
     private String loggedInUserName;
+    
+    
     @FXML
     public void initialize() {
         // Initialize columns
@@ -88,7 +91,7 @@ public class BookControl {
     }
     public void setLoggedInUserName(String userName) {
         this.loggedInUserName = userName;
-        staffName.setText("Staff: " + loggedInUserName); // Set the label text here
+        staffName.setText(loggedInUserName); // Set the label text here
     }
 
 
@@ -96,6 +99,10 @@ public class BookControl {
     public void DashboardClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Dashboard.fxml"));
         Parent root = loader.load();
+        
+        DashboardControl DashboardControl = loader.getController();
+        DashboardControl.setLoggedInUserName(loggedInUserName);
+        
         Stage stage = (Stage) btnDashboard.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -107,6 +114,10 @@ public class BookControl {
     public void BorrowClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Borrow.fxml"));
         Parent root = loader.load();
+        
+        BorrowControl BorrowControl = loader.getController();
+        BorrowControl.setLoggedInUserName(loggedInUserName);
+        
         Stage stage = (Stage) btnBorrow.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -118,6 +129,10 @@ public class BookControl {
     public void ReturnClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Return.fxml"));
         Parent root = loader.load();
+        
+        ReturnControl ReturnControl = loader.getController();
+        ReturnControl.setLoggedInUserName(loggedInUserName);
+        
         Stage stage = (Stage) btnReturn.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -129,6 +144,10 @@ public class BookControl {
     public void CustomerClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Customer.fxml"));
         Parent root = loader.load();
+        
+        CustomerControl CustomerControl = loader.getController();
+        CustomerControl.setLoggedInUserName(loggedInUserName);
+        
         Stage stage = (Stage) btnCustomer.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -140,6 +159,10 @@ public class BookControl {
     public void CategoryClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/Category.fxml"));
         Parent root = loader.load();
+        
+        CategoryControl CategoryControl = loader.getController();
+        CategoryControl.setLoggedInUserName(loggedInUserName);
+        
         Stage stage = (Stage) btnCategory.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
