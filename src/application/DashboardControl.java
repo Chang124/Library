@@ -78,9 +78,7 @@ public class DashboardControl {
 
         // Load data into the available books table
         loadAvailableBooks();
-        
-        
-     // Get total quantity from BookControl and bind to sumQuantity label
+        updateSumInventory();        
     }
        
     public void setLoggedInUserName(String userName) {
@@ -93,12 +91,21 @@ public class DashboardControl {
     }
     
     public void calculateTotalBorrowedQuantity(int totalBorrowed) {
-        System.out.println("Setting Total Borrowed Quantity: " + totalBorrowed); // Debug statement
         sumBorrow.setText(String.valueOf(totalBorrowed));
     }
     
     public void totalCustomers(int totalCustomers) {
     	sumCustomer.setText(String.valueOf(totalCustomers));
+    }
+    
+    private void updateSumInventory() {
+        // Calculate sumInventory
+        int quantity = Integer.parseInt(sumQuantity.getText());
+        int borrow = Integer.parseInt(sumBorrow.getText());
+        int inventory = quantity + borrow;
+
+        // Set the sumInventory label
+        sumInventory.setText(String.valueOf(inventory));
     }
     
     

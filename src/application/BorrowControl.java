@@ -317,7 +317,7 @@ public class BorrowControl {
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Error calculating total borrowed quantity: " + e.getMessage());
         }
-        System.out.println("Total Borrowed Quantity: " + totalBorrowed); // Debug statement
+        
         return totalBorrowed;
     }
 
