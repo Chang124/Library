@@ -261,15 +261,16 @@ public class ReturnControl {
 
     @FXML
     public void AddReturnClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui/NewReturn.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/UpdateReturn.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
         Scene scene = new Scene(root);
-
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Add New Return Information");
-
-        primaryStage.show();
-        loadReturns();
+        stage.setScene(scene);
+        stage.setTitle("Add Return Information");
+        stage.showAndWait(); // Wait for the update return window to close
+        loadReturns(); // Refresh the return list after updating
+                
     }
 
     @FXML

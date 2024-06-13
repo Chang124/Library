@@ -23,8 +23,6 @@ public class NewReturnControl {
     @FXML
     private TextField txtBorrowID;
     @FXML
-    private TextField txtQuantity;
-    @FXML
     private DatePicker dtReturn;
     @FXML
     private Button btnCreate;
@@ -35,11 +33,10 @@ public class NewReturnControl {
     public void CreateClick(MouseEvent event) {
         // Get input data
         String borrowIDStr = txtBorrowID.getText().trim();
-        String quantityStr = txtQuantity.getText().trim();
         LocalDate returnDate = dtReturn.getValue();
 
         // Validate input
-        if (borrowIDStr.isEmpty() || quantityStr.isEmpty() || returnDate == null) {
+        if (borrowIDStr.isEmpty() || returnDate == null) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Please fill in all fields.");
             return;
         }
@@ -47,7 +44,6 @@ public class NewReturnControl {
         int borrowID, quantity;
         try {
             borrowID = Integer.parseInt(borrowIDStr);
-            quantity = Integer.parseInt(quantityStr);
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Invalid input. Borrow ID and Quantity must be integers.");
             return;
@@ -70,6 +66,10 @@ public class NewReturnControl {
                 // Close the current window
                 Stage stage = (Stage) btnCreate.getScene().getWindow();
                 stage.close();
+
+    		    // Refresh the category list in the main view
+    		    ReturnControl controller = new ReturnControl();
+    		    controller.loadReturns();
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to create return record. Please try again.");
             }
@@ -77,6 +77,8 @@ public class NewReturnControl {
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Database Error", "Error creating return record: " + e.getMessage());
         }
+        
+        
     }
 
     @FXML

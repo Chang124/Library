@@ -251,13 +251,16 @@ public class DashboardControl {
 
     private int getTotalBorrowed() throws SQLException {
         int totalBorrowed = 0;
-        String query = "SELECT COUNT(*) AS total FROM borrow_record";
+        String query = "SELECT SUM(br.quantity) AS total_quantity FROM borrow_record br "
+                + "LEFT JOIN return_record rr ON br.borrowID = rr.borrowID "
+                + "WHERE rr.returned_date IS NULL";
+
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
 
             if (rs.next()) {
-                totalBorrowed = rs.getInt("total");
+                totalBorrowed = rs.getInt("total_quantity");
             }
         }
         return totalBorrowed;

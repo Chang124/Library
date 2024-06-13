@@ -215,23 +215,24 @@ public class BorrowControl {
         }
     }
 
-    // search click
     @FXML
     public void SearchClick(MouseEvent event) {
         String searchText = txtSearch.getText();
         ObservableList<Borrow> borrows = FXCollections.observableArrayList();
         String query = "SELECT br.borrowID, c.cusName, s.staffName, b.title, br.quantity, br.released_date, br.return_date " +
-                "FROM borrow_record br JOIN customer c ON br.cusID = c.cusID " +
-                "JOIN staff s ON br.staffID = s.staffID JOIN book b ON br.bookID = b.bookID " +
+                "FROM borrow_record br " +
+                "JOIN customer c ON br.cusID = c.cusID " +
+                "JOIN staff s ON br.staffID = s.staffID " +
+                "JOIN book b ON br.bookID = b.bookID " +
                 "WHERE br.borrowID LIKE ? OR c.cusName LIKE ? OR b.title LIKE ?";
 
         try (Connection conn = Connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
+            // Set parameters for the placeholders
             pstmt.setString(1, "%" + searchText + "%");
             pstmt.setString(2, "%" + searchText + "%");
             pstmt.setString(3, "%" + searchText + "%");
-            pstmt.setString(4, "%" + searchText + "%");
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -253,7 +254,7 @@ public class BorrowControl {
             showAlert(Alert.AlertType.ERROR, "Error", "Error searching borrows: " + e.getMessage());
         }
     }
-    
+
     @FXML
     public TableView<Borrow> getTbBorrow() {
         return tbBorrow;
